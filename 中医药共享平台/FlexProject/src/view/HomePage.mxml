@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init()" title="简介"
+	 titleStyleName="titleColor" styleName="mypanel" fontSize="12">
+	 
+	 <mx:Style source="style/mystyle.css"/> 
+	<mx:Model id="myModel" source="../conf/IntroInfo.xml"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			[Bindable]
+			public var info:String;
+			
+			public function init():void
+			{
+				info = myModel.domain[0].introduce;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="90%" horizontalAlign="center" verticalGap="10" paddingTop="15"  borderColor="#696969">
+		<mx:Label  height="41" color="#660066" text="中药临床数据库介绍" fontSize="20"/>
+		<mx:Text height="220" width="90%" color="#6666FF" fontSize="14"/>
+		
+		<!--
+		<mx:HorizontalList id="picList" height="300" columnCount="3" width="90%" borderStyle="none">
+		<mx:dataProvider>
+			<mx:Array>
+		-->	
+			<mx:HBox width="90%">
+				<mx:Image width="30%" height="200" source="@Embed('assets/1.jpg')"/>
+				<mx:Image width="30%" height="200" source="@Embed('assets/2.jpg')"/>
+				<mx:Image width="30%" height="200" source="@Embed('assets/3.jpg')"/>
+			</mx:HBox>	
+		<!--
+			</mx:Array>
+		</mx:dataProvider>
+		</mx:HorizontalList>
+		-->
+	</mx:VBox>
+	
+	
+</mx:Panel>

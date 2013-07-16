@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+	<domain name="临床">
+		<param>
+    		<variable label="疾病">?jb</variable>
+			<variable label="症状">?zz</variable>
+			<variable label="症候">?zh</variable>
+  		</param>
+
+		<entrylist>
+			<entry>
+				<label>疾病名称</label>     <!--入口名称 -->
+				<uri>http://cintcm.ac.cn/onto#wmdiseasename</uri>   <!--西医疾病名称 -->
+				<uri>http://cintcm.ac.cn/onto#tcmdiseasename</uri>  <!--中医疾病名称 -->
+				<tab>
+					<item>
+						<label>疾病信息</label>
+						<id>1</id>
+					</item>
+					<item>
+						<label>临床研究</label>
+						<id>2</id>
+					</item>
+					<item>
+						<label>相关症状</label>
+						<id>3</id>
+					</item>
+					<item>
+						<label>相关症候</label>
+						<id>5</id>
+					</item>
+					<item>
+						<label>临床诊疗</label>
+						<id>6</id>
+					</item>
+					<item>
+						<label>治疗方案</label>
+						<id>7</id>
+					</item>
+					<item>
+						<label>汇总</label>
+						<id>8</id>
+					</item>
+				</tab>
+			</entry>
+			
+			<entry>
+				<label>症状名称</label>   <!--入口名称 -->
+				<tab>
+					<item>
+						<label>症状信息</label>
+						<value></value>
+					</item>
+					<item>
+						<label>相关疾病</label>
+						<value></value>
+					</item>
+					<item>
+						<label>相关症候</label>
+						<value></value>
+					</item>
+					<item>
+						<label>检测指标</label>
+						<value></value>
+					</item>
+					<item>
+						<label>治疗方案</label>
+						<value></value>
+					</item>
+				</tab>
+			</entry>
+			
+			<entry>
+				<label>症候名称</label>    <!--入口名称 -->
+				<uri></uri>   <!-- -->
+			</entry>
+			
+			<entry>
+				<label>药物名称</label>    <!--入口名称 -->
+				<uri></uri>   <!-- -->
+			</entry>
+		</entrylist>
+		
+		<ontologies>
+			<ontology label="疾病" variable="?jb">
+				<ontologyURI>http://cintcm.ac.cn/onto#TCMDisease</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="概念词" variable="?jb_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+						<column>JBMC</column>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="有症候" variable="?zh">http://cintcm.ac.cn/onto#youzhenghou</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZH</table>
+						<joinref>hasZhengHou</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="有症状" variable="?zz">http://cintcm.ac.cn/onto#youzhengzhuang</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_LCZZ</table>
+						<joinref>hasZhengZhuang</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="被疗法治疗">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_QTLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="被疗法治疗">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_XYLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="被疗法治疗">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_YFLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="被疗法治疗">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZJLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="被疗法治疗">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_AMLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</ontoProp>
+				</ontoProps>
+			</ontology>
+				
+			<ontology label="症候" variable="?zh">
+				<ontologyURI>http://cintcm.ac.cn/onto#Syndrome</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="相关疾病" variable="?jb">http://cintcm.ac.cn/onto#xiangguanjibing</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_JB</table>
+						<joinref>hasJiBing</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="有症状" variable="?zz">http://cintcm.ac.cn/onto#youzhengzhuang</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_LCZZ</table>
+						<joinref>hasZhengZhuang</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="概念词" variable="?zh_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+						<column>ZHMC</column>
+					</ontoProp>
+				</ontoProps>
+      		</ontology>
+			
+			<ontology label="症状" variable="?zz">
+				<ontologyURI>http://cintcm.ac.cn/onto#Symptom</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="有症候" variable="?zh">http://cintcm.ac.cn/onto#youzhenghou</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZH</table>
+						<joinref>hasZhengHou</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="相关疾病" variable="?jb">http://cintcm.ac.cn/onto#xiangguanjibing</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_JB</table>
+						<joinref>hasJiBing</joinref>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="概念词" variable="?zz_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+						<column>ZZMC</column>
+					</ontoProp>
+				</ontoProps>
+      		</ontology>	
+
+		</ontologies>
+		<views>
+			<grid name="相关症状">
+				<column>
+					<label>序号</label>
+					<field>id</field>>
+				</column>
+				<column>
+					<label>症状名称</label>
+					<field>primary</field>>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>>
+				</column>
+				<column>
+					<label>相关疾病</label>
+					<field>link</field>>
+				</column>
+				<column>
+					<label>相关临床研究</label>
+					<field>link</field>>
+				</column>
+				<column>
+					<label>相关症候</label>
+					<field>link</field>>
+				</column>
+			</grid>
+		</views>
+	</domain>
+</app>

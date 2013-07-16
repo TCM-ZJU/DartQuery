@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off"
+	 xmlns:Component="view.Components.*">
+	 
+	<mx:Style source="style/mystyle.css"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.collections.ArrayCollection;
+			import events.yaoli.StatSearchEvent;
+			import model.TsfModelLocator;
+			import mx.controls.Alert;
+			import renderers.LinkRenderer;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var key:String = modelLocator.currentInfo.keyword;
+			public var source:String;
+			public var cate:String;
+			
+			public function init(result:XML):void
+			{
+			//	Alert.show(result.toString());
+				var resStr:String = result.toString();
+				var resArray:Array = resStr.split("-");
+				var data:Array = new Array();
+				for (var i:int = 0; i < resArray.length; i++)
+				{	
+					var curStr:String = resArray[i] as String;
+					var pos:int = curStr.indexOf(" ");
+					var primary:String = curStr.substring(0, pos);
+					var count:String = curStr.substring(pos+1, curStr.length);
+					var content:String = key + "相关 <b>" + primary + "</b> 共有" + count + "条";
+					var item:Object = new Object();
+					item.content = content; 
+					item.primary = primary;
+					data.push(item);
+				}
+				dataGrid.height = 35*data.length;
+				for each(var column:DataGridColumn in dataGrid.columns)
+				{
+					if (column.dataField == "link")
+					{
+						column.width = 150;
+						var itemLinkRenderer:ClassFactory = new ClassFactory(LinkRenderer);
+						itemLinkRenderer.properties = {source:"", columnLabel: column.headerText};
+						column.itemRenderer = itemLinkRenderer;
+					}
+				}
+				dataGrid.dataProvider = data;
+			}
+			
+			public function getSimpleInfo(target:String):void
+			{
+				cate = "";
+				source = modelLocator.currentInfo.currentEntry;
+				var identity:int = 2;
+				var field:String = target;
+				if (modelLocator.entryIndex < 3)
+				{
+					var entryString:String = modelLocator.currentInfo.currentEntry;
+					var pos:int = entryString.indexOf("-");
+					source = entryString.substring(0, pos);
+					cate = entryString.substring(pos+1, entryString.length);
+					identity = 1;
+				}
+				else if (modelLocator.entryIndex == 3 || modelLocator.entryIndex == 5)
+				{
+					if (target.indexOf("单味药") != -1 || target.indexOf("化学成分") != -1 || target.indexOf("方剂") != -1)
+						identity = 1;
+					
+				}
+				var statSearchEvent:StatSearchEvent = new StatSearchEvent(key, cate, source, target, field, 0, 5, identity);
+				statSearchEvent.dispatch();
+			}
+			
+			public function showSimpleInfo(result:XML):void
+			{
+				var info:String = result..target + ": ";
+				var count:int = 0;
+				for each(var record:XML in result..record)
+				{
+					count++;
+					var content:XML = record.children()[1];
+					info += count + ". " + content.text() + " ";
+				}
+				simpleInfo.text = info;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5">
+		<!--
+		<mx:Text id="count" fontSize="12" color="red" />
+		-->
+		<mx:Label text="点击条目查看频次前五的相关信息" color="#CC6600" fontSize="15" />
+		<mx:Text id="simpleInfo" width="95%" height="30" fontSize="14" color="red" />
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="95%" height="100%" textAlign="center" fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true" headerStyleName="mydataGridHeaderStyle">
+			 <mx:columns>
+			 	<mx:DataGridColumn headerText="内容" width="500" >
+				 	<mx:itemRenderer>
+						<mx:Component>
+						<mx:Text htmlText="{data.content}" color="red"
+							click="outerDocument.getSimpleInfo(data.primary)"
+							 buttonMode="true" mouseChildren="false" />
+						</mx:Component>
+					</mx:itemRenderer>
+			 	</mx:DataGridColumn>
+			 	<mx:DataGridColumn headerText="详细信息" dataField="link" />
+			 	
+			 	<!--
+			 	<mx:DataGridColumn headerText="统计信息" dataField="link" />
+			 	
+			 	<mx:DataGridColumn headerText="原文信息" dataField="link" />
+			 	-->
+			 </mx:columns>  
+		</mx:DataGrid> 
+	</mx:VBox>
+</mx:Canvas>

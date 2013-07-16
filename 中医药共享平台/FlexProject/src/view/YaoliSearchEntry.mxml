@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="700" paddingLeft="5" paddingTop="5" paddingRight="5"
+	fontSize="12" title="检索入口" titleStyleName="titleColor" styleName="mypanel">
+	
+	<mx:Style source="style/mystyle.css"/>
+	
+	<mx:Metadata>
+    	[Event(name="search",type="events.Search")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import model.TsfModelLocator;
+			import events.Search;
+			import mx.controls.Alert;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+//			public var searchEntry1:Array = ["研究药物", "研究对象", "实验对象", "药物功效与作用", "检测指标", "动物"];
+//			public var searchEntry2_1:Array = ["单味药", "化学成分", "方剂名"];
+//			public var searchEntry2_2:Array = ["疾病", "证候", "症状", "组织器官与细胞", "微生物", "病理生理", "其它"];
+//			public var searchEntry2_3:Array = ["实验动物", "其他"];
+//			public var searchEntry2_4:Array = ["无"];
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			[Bindable]
+			private var primaryIndex:int = modelLocator.primaryEntryIndex;
+			[Bindable]
+			private var subIndex:int = modelLocator.subEntryIndex;
+			
+//			public function init():void
+//			{
+//				if (modelLocator.primaryEntryIndex >= 3)
+//					combo2.enabled = false;
+//				else combo2.enabled = true;
+//			}
+			
+			public function search(type:int):void 
+			{
+				var entry1:String;
+				var entry2:String;
+				
+				//改成单级入口
+//				entry1 = combo1.selectedLabel;
+//				if (combo1.selectedIndex < 3)
+//					entry2 = combo2.selectedLabel;
+//				else 
+//					entry2 = "";
+				
+				var key:String = trimKeyword(keywordInput.text);
+			//	modelLocator.primaryEntryIndex = combo1.selectedIndex;
+				modelLocator.entryIndex = combo1.selectedIndex;
+			//	primaryIndex = modelLocator.primaryEntryIndex;
+			//	modelLocator.subEntryIndex = combo2.selectedIndex;
+			//	subIndex = modelLocator.subEntryIndex;
+				modelLocator.currentInfo.keyword = key;
+			//	modelLocator.currentInfo.primaryEntry = combo1.selectedLabel;
+			//	modelLocator.currentInfo.subEntry = combo2.selectedLabel;
+				modelLocator.currentInfo.currentEntry = combo1.selectedLabel;
+			//	modelLocator.currentView = modelLocator.yaoLi.primaryEntryList[primaryIndex].subEntryList[subIndex].itemArray[0];
+				modelLocator.searchType = type;
+				this.dispatchEvent(new Search(Search.TYPE));
+			}
+			
+//			public function setEntry2():void 
+//			{
+//				var index:int = combo1.selectedIndex;
+//				combo2.dataProvider = modelLocator.yaoLi.primaryEntryList[index].subEntryList;
+//				if (modelLocator.yaoLi.primaryEntryList[index].subEntryList[0].label != "")
+//					combo2.enabled = true;
+//				else 
+//				{
+//					combo2.enabled = false;
+//				}
+//			}
+			
+			private function enterKeyDownHandler(event:KeyboardEvent):void
+			{
+				if (event.keyCode == 13)
+				{
+					validator1.validate();
+				}
+			}
+			
+			private function trimKeyword(key:String):String
+			{
+				var startPos:int;
+				var endPos:int;
+				for (var i:int = 0; i < key.length; i++)
+				{
+					if (key.charAt(i) != ' ')
+					{
+						startPos = i;
+						break;
+					}
+				}
+				for (var j:int = key.length - 1; j >= 0; j--)
+				{
+					if (key.charAt(j) != ' ')
+					{
+						endPos = j;
+						break;
+					}
+				}
+				return key.substring(startPos, endPos + 1);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:StringValidator id="validator1" source="{keywordInput}" property="text" requiredFieldError=""
+    	tooShortError="" minLength="1"
+    	trigger="{button1}" triggerEvent="click" 
+    	valid="search(1)"/>
+    <mx:StringValidator id="validator2" source="{keywordInput}" property="text" requiredFieldError=""
+    	tooShortError="" minLength="1"
+    	trigger="{button2}" triggerEvent="click" 
+    	valid="search(2)"/>
+    	
+	<mx:VBox verticalGap="5">
+		<mx:Form verticalGap="15" height="200" width="241" horizontalScrollPolicy="off">
+			<mx:FormItem id="entry1" label="检索项: ">
+				<mx:ComboBox id="combo1" width="150" height="25" fontSize="12" rowCount="8" labelField="label"
+					 selectedIndex="{modelLocator.entryIndex}" dataProvider="{modelLocator.yaoLi.entrylist}">
+				</mx:ComboBox>
+			</mx:FormItem>
+			<!-- 改成单级入口
+			<mx:FormItem id="entry1" label="一级入口: ">
+				<mx:ComboBox id="combo1" width="136" height="25" fontSize="12" rowCount="6" labelField="label"
+					 dataProvider="{modelLocator.yaoLi.primaryEntryList}" selectedIndex="{modelLocator.primaryEntryIndex}" close="setEntry2();">
+				</mx:ComboBox>
+			</mx:FormItem>
+			<mx:FormItem id="entry2" label="二级入口: ">
+				<mx:ComboBox id="combo2" width="136" height="25" fontSize="12" rowCount="7" labelField="label"
+					 dataProvider="{modelLocator.yaoLi.primaryEntryList[modelLocator.primaryEntryIndex].subEntryList}" selectedIndex="{modelLocator.subEntryIndex}">
+				</mx:ComboBox>
+			</mx:FormItem>
+			-->
+			<mx:FormItem label="检索词: ">
+				<mx:TextInput id="keywordInput" width="150" text="{modelLocator.currentInfo.keyword}" keyDown="enterKeyDownHandler(event)"/>
+			</mx:FormItem>
+			
+				<mx:HBox horizontalGap="15" width="95%" horizontalAlign="center">
+					<mx:Button id="button1" label="精确查询" fontSize="12" buttonMode="true" styleName="myButton"
+						 labelPlacement="left" />
+					<mx:Button id="button2" label="模糊查询" fontSize="12" buttonMode="true" styleName="myButton"
+						 labelPlacement="left" />
+				</mx:HBox>
+		</mx:Form>
+		<mx:Label text="索引" styleName="titleColor"/>
+		<!--
+		<mx:Tree id="tree" height="467" width="241" labelField="@label" fontSize="12"
+                showRoot="false" dataProvider="{treeData}">
+    	</mx:Tree>
+    	-->
+	</mx:VBox>
+	<mx:XMLList id="treeData">
+	    <node label="root">
+	        <node label="解表药">
+	            <node label="辛温解表药"/>
+	            <node label="辛凉解表药"/>
+	        </node>
+	        <node label="清热药">
+	            <node label="清热泻火药"/>
+	            <node label="清热燥湿药"/>
+	            <node label="清热解毒药"/>
+	            <node label="清热凉血药"/>
+	            <node label="清虚热药"/>
+	        </node>
+	        <node label="泻下药">
+	            <node label="攻下药"/>
+	            <node label="润下药"/>
+	            <node label="峻下逐水药"/>
+	        </node>
+	        <node label="祛风湿药">
+	        	 <node label="祛风湿散寒药"/>
+	        	 <node label="祛风湿清热药"/>
+	        	 <node label="祛风湿强筋骨药"/>
+	        </node>
+	        <node label="化湿药">
+	        	 <node label="芳香化湿药"/>
+	        </node>
+	        <node label="利水渗湿药">
+	        	 <node label="利水消肿药"/>
+	        	 <node label="利尿通淋药"/>
+	        	 <node label="利湿退黄药"/>
+	        </node>
+		</node>	
+    </mx:XMLList>
+	
+
+</mx:Panel>

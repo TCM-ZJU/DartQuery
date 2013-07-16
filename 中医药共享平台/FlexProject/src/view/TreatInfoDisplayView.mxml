@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off" 
+	xmlns:Component="view.Components.*">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import events.RecordSearchEvent;
+			import events.RelationSearchEvent;
+			import renderers.LinkRenderer;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			
+			public var curView:String = "";
+			public var key:String = "";
+			public var source:String = "";
+			public var target:String = "";
+			
+			public var tag:Array = ["相关治疗方案","中药药方疗法", "按单味药统计", "按摩疗法", "针灸疗法", "按穴位统计", "西药疗法", "其他疗法"];
+			
+			public function init(key:String, source:String, target:String):void
+			{
+				this.key = key;
+				this.source = source;
+				this.target = target;
+			}
+			
+			public function showRecord(result:XML):void
+			{
+				var columnsArray:Array = new Array();
+				for each(var columnXML:XML in result..column)
+				{
+					var column:DataGridColumn = new DataGridColumn();
+					column.headerText = columnXML.@headerText;
+					column.dataField = columnXML.@dataField;
+					if (column.dataField == "id")
+						column.width = 70;
+					else if (column.dataField == "count")
+						column.width = 70;
+					else if (column.dataField == "link")
+					{
+						column.width = 100;
+						var itemLinkRenderer:ClassFactory = new ClassFactory(LinkRenderer);
+						if (target.indexOf("治疗方案") != -1)	
+							var sourceArea:String = "临床研究";
+						else sourceArea = target;
+						if (target.indexOf("单味药") != -1)
+							var targetArea:String = "相关药方疗法";
+						else targetArea = column.headerText;
+						itemLinkRenderer.properties = {source:sourceArea, columnLabel: targetArea};
+						column.itemRenderer = itemLinkRenderer;
+					}
+					else {
+						column.width = 250;
+					}
+					columnsArray.push(column);		
+				}
+				dataGrid.columns = columnsArray;
+				dataGrid.dataProvider = result..record;
+			//	Alert.show(result..totalHits);
+				navBar.recordCount = result..totalHits;
+				navBar.recordNumPerPage = result..pageSize;
+				count.htmlText = "<b>" + key + "</b> " + target + "共有" + result..totalHits + "条 每页" + navBar.recordNumPerPage + "条 共" + navBar.pageCount + "页" ;
+			}
+			
+			public function clickHandler(event:ItemClickEvent):void
+			{
+				target = event.label;
+				switch(event.index) {
+					case 1:
+					case 3:
+					case 4:
+					case 6:
+					case 7:
+						var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key,source,target, 0, 20);
+						recordSearchEvent.dispatch();
+						break;
+					case 0:
+					case 2:
+					case 5:
+						var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source, target,0,20);
+						relationSearchEvent.dispatch();
+						break;
+				}
+			}
+		
+			public function pageChangeHandler():void 
+			{
+			//	Alert.show(key + " " + source + " " + target);
+				switch(togglebar.selectedIndex)
+				{
+					case 1:
+					case 3:
+					case 4:
+					case 6:
+					case 7:
+						var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key,source,target, navBar.currentPageIndex-1, 20);
+						recordSearchEvent.dispatch();
+						break;
+					case 0:
+					case 2:
+					case 5:
+						var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source, target,navBar.currentPageIndex-1,20);
+						relationSearchEvent.dispatch();
+						break;		
+				}
+			}
+		
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5">
+		<mx:ToggleButtonBar id="togglebar" selectedIndex="0" width="90%" height="25" dataProvider="{tag}" color="haloBlue" 
+			 selectedButtonTextStyleName="SelectedButtonTextStyleName" itemClick="clickHandler(event)">
+		</mx:ToggleButtonBar>
+		<mx:Label id="count" fontSize="12" color="red" />
+			
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="95%" textAlign="center" rowCount="20"  fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" headerStyleName="mydataGridHeaderStyle">
+		</mx:DataGrid>	
+		<Component:SuperNavBar id="navBar" width="100%" change="pageChangeHandler();" />
+	</mx:VBox>
+	
+</mx:Canvas>

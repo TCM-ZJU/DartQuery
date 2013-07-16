@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			import model.TsfModelLocator;
+			
+			import mx.controls.Alert;
+			[Bindable]
+			public var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var resultArray:Array = new Array();
+			
+			public function init(result:XML):void
+			{
+				var map:Object = new Object();
+				var danweiArray:Array = new Array();
+				for each(var record:XML in result..record)
+				{
+					var danwei:String = record.jldw;
+					
+					if (record.ywjl == "")
+						continue;
+					if (!record.ywjl is Number)
+						continue;
+					var jiliang:Number = Number(record.ywjl);
+					
+					if (danwei == "")
+						danwei = "无";
+					if (map[danwei] == null)
+					{
+						danweiArray.push(danwei);
+						map[danwei] = new Object();
+						map[danwei].min = jiliang;
+						map[danwei].max = jiliang;
+					}
+					else 
+					{
+						if (jiliang < map[danwei].min)
+							map[danwei].min = jiliang;
+						if (jiliang > map[danwei].max)
+							map[danwei].max = jiliang;	
+					}
+				}
+				for (var i:int = 0; i < danweiArray.length; i++)
+				{
+					var danwei:String = danweiArray[i];
+					var object:Object = new Object();
+					object.id = i+1;
+					object.jiliang = map[danwei].min + "-" + map[danwei].max;
+					object.danwei = danwei;
+					resultArray.push(object);
+				}
+				dataGrid.dataProvider = resultArray;
+				count.htmlText = "单味药 <b>" + modelLocator.currentInfo.keyword + "</b> 的剂量范围按单位分有" + resultArray.length + "种";
+			//	Alert.show(map["炒"].min + " " + map["blank"].max);
+				
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="10" paddingBottom="5" paddingTop="5">
+		<mx:Text id="count" fontSize="14" color="red" />
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="80%" height="100%" textAlign="center" fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true" headerStyleName="mydataGridHeaderStyle">
+			<mx:columns>
+				<mx:DataGridColumn headerText="序号" dataField="id" width="30" />
+			 	<mx:DataGridColumn headerText="剂量范围" dataField="jiliang" width="60" />
+			 	<mx:DataGridColumn headerText="剂量单位" dataField="danwei" width="30" />
+			</mx:columns>
+		</mx:DataGrid>
+		
+	</mx:VBox>
+</mx:Canvas>

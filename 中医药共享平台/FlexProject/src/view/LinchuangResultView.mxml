@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" paddingLeft="5" title="查询结果" titleStyleName="titleColor" xmlns:flexlib="flexlib.containers.*" 
+	 styleName="mypanel" paddingRight="5" paddingTop="5" fontSize="12" creationComplete="init()" xmlns:Component="view.Components.*" xmlns:view="view.*">
+	<mx:Style source="style/mystyle.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.ItemClickEvent;
+			import events.LinkButtonDynamicEvent;
+			import model.TsfModelLocator;
+			import events.RelationSearchEvent;
+			import events.RecordSearchEvent;
+			import events.IndexSearchEvent;
+			import events.LinchuangPicSearchEvent;
+			import events.LinChuangGeneralSearchEvent;
+			import mx.controls.Alert;
+			import vo.*;
+			import view.*;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			[Bindable]
+			public var tag1:ArrayCollection;
+			
+			public function init():void
+			{
+				this.addEventListener(LinkButtonDynamicEvent.EVENT_ID, linkButtonClickHandler);
+			}
+			public function create():void 
+			{
+			//	Alert.show(modelLocator.linChuang.entrylist.length.toString());
+				var array:Array = new Array();
+				var entryItem:EntryItem = modelLocator.linChuang.entrylist[modelLocator.entryIndex];
+				for each(var str:String in entryItem.itemArray)
+				{
+					array.push(str);
+				//	Alert.show(item.label);
+				}
+				tag1 = new ArrayCollection(array);
+				
+			}
+			
+			public function initView():void
+			{
+				tabNav.removeAllChildren();
+				var key:String = modelLocator.currentInfo.keyword;
+				var source:String = modelLocator.currentInfo.currentEntry;
+				var title:String = "文献信息";
+				var target:String = "文献";
+				var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key, source, target, 0, 20);
+				recordSearchEvent.dispatch();
+				var wenxianView:LinchuangWenxianView = new LinchuangWenxianView();
+				wenxianView.label = title;
+				tabNav.addChild(wenxianView);
+				tabNav.selectedChild = wenxianView;
+				tabNav.selectedChild.name = "wenxian";
+				/*
+				var key:String = modelLocator.currentInfo.keyword;
+				var source:String = modelLocator.currentInfo.currentEntry;
+				var title:String = "统计信息";
+				var target:String = "";
+				for (var i:int = 0; i < tag1.length; i++)
+					target += tag1[i] + "-";
+				var generalSearchEvent:LinChuangGeneralSearchEvent = new LinChuangGeneralSearchEvent(key, source, target);
+				generalSearchEvent.dispatch();
+				var displayView:LinchuangGeneralInfoView = new LinchuangGeneralInfoView();
+				displayView.label = title;
+				tabNav.addChild(displayView);
+				tabNav.selectedChild = displayView;
+				tabNav.selectedChild.name = "general";  	
+				*/
+//					switch(modelLocator.entryIndex)
+//					{
+//						case 0:
+//							var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key, source, target, 0, 10);
+//							recordSearchEvent.dispatch();
+//							var displayInfoView:DisplayInfoView = new DisplayInfoView();
+//							displayInfoView.label = title;
+//							tabNav.addChild(displayInfoView);
+//							tabNav.selectedChild = displayInfoView;
+//							tabNav.selectedChild.name = modelLocator.currentView;  
+//							break;
+//						case 1:
+//						case 2:
+//						case 3:
+//							var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source, target,0,20);
+//							relationSearchEvent.dispatch();
+//							var displayInfoView:DisplayInfoView = new DisplayInfoView();
+//							displayInfoView.label = title;
+//							tabNav.addChild(displayInfoView);
+//							tabNav.selectedChild = displayInfoView;
+//							tabNav.selectedChild.name = modelLocator.currentView;  
+//							break;
+//					}
+			}
+			
+			public function changeView(label:String):void
+			{
+				modelLocator.currentView = label;
+				var title:String = modelLocator.currentInfo.keyword + "-" + modelLocator.currentView;
+				if (tabNav.getChildByName(modelLocator.currentView) == null)
+				{  
+					var key:String = modelLocator.currentInfo.keyword;
+					var source:String = modelLocator.currentInfo.currentEntry;
+					var target:String = label;
+				//	Alert.show(target);
+					if (target == "治疗方案") 
+					{
+						var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source, target,0,20);
+						relationSearchEvent.dispatch();
+						var TreatdisplayInfoView:TreatInfoDisplayView = new TreatInfoDisplayView();
+						TreatdisplayInfoView.label = title;
+						TreatdisplayInfoView.init(key, source, target);
+						tabNav.addChild(TreatdisplayInfoView);
+						tabNav.selectedChild = TreatdisplayInfoView;
+						tabNav.selectedChild.name = modelLocator.currentView;  
+					}
+					else if (target == "疾病信息")
+					{
+						var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key, source, target, 0, 10);
+						recordSearchEvent.dispatch();
+						var displayInfoView:DisplayInfoView = new DisplayInfoView();
+						displayInfoView.label = title;
+						tabNav.addChild(displayInfoView);
+						tabNav.selectedChild = displayInfoView;
+						tabNav.selectedChild.name = modelLocator.currentView;  
+					}
+					else if (target == "统计信息")
+					{
+						var key:String = modelLocator.currentInfo.keyword;
+						var source:String = modelLocator.currentInfo.currentEntry;
+						var title:String = "统计信息";
+						var items:String = "";
+						for (var i:int = 0; i < tag1.length; i++)
+							items += tag1[i] + "-";
+						var generalSearchEvent:LinChuangGeneralSearchEvent = new LinChuangGeneralSearchEvent(key, source, items);
+						generalSearchEvent.dispatch();
+						var displayView:LinchuangGeneralInfoView = new LinchuangGeneralInfoView();
+						displayView.label = title;
+						tabNav.addChild(displayView);
+						tabNav.selectedChild = displayView;
+						tabNav.selectedChild.name = "统计信息";  	
+					}
+					else if (target == "使用剂量")
+					{
+						var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key, source, target, 0, 14);
+						recordSearchEvent.dispatch(); 
+						var herbDosageView:LinchuangHerbDosageView = new LinchuangHerbDosageView();
+						herbDosageView.label = title;
+						tabNav.addChild(herbDosageView);
+						tabNav.selectedChild = herbDosageView;
+						tabNav.selectedChild.name = modelLocator.currentView; 
+					}
+					else 
+					{
+						var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source,target,0,20);
+						relationSearchEvent.dispatch();
+					 	var displayInfoView:DisplayInfoView = new DisplayInfoView();
+						displayInfoView.label = title;
+						tabNav.addChild(displayInfoView);
+						tabNav.selectedChild = displayInfoView;
+						tabNav.selectedChild.name = modelLocator.currentView;  
+					}
+					
+				}
+				else 
+				{
+					var index:int = tabNav.getChildIndex(tabNav.getChildByName(modelLocator.currentView));
+					tabNav.selectedIndex = index;
+				}
+			}
+			
+			public function linkButtonClickHandler(event:LinkButtonDynamicEvent):void
+			{
+				//modelLocator.currentView = event.rowObject.primary + "-" + event.label;
+				var title:String = event.key + "-" + event.label;
+				if (tabNav.getChildByName(title) == null)
+				{
+					var key:String = event.key;
+					var source:String = event.source;
+					var target:String = event.label;
+					if (source.indexOf("临床研究") != -1 && target.indexOf("详细信息") != -1)
+					{
+						var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key,source,target, 0, 1);
+						recordSearchEvent.dispatch();
+						var lcyjDisplayInfoView:LCYJDisplayInfoView = new LCYJDisplayInfoView();
+						lcyjDisplayInfoView.init(key, source, target);
+					 	modelLocator.currentView = target;
+					 	lcyjDisplayInfoView.label = title;
+						tabNav.addChild(lcyjDisplayInfoView);
+						tabNav.selectedChild = lcyjDisplayInfoView;
+						tabNav.selectedChild.name = title; 
+					}
+					else if (target == "详细信息")
+					{
+						changeView(key);
+					}
+					else if (target == "原文")
+					{
+						//Alert.show(key + " " + source + " " + target);
+						var picSearchEvent:LinchuangPicSearchEvent = new LinchuangPicSearchEvent(key, source, target, 0, 10);
+						picSearchEvent.dispatch();
+					}
+					else
+					{
+					//	if (source.indexOf("单味药") != -1 || source.indexOf("穴位")!= -1)
+					//	{
+					//		var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key,source,target, 0, 20);
+					//		recordSearchEvent.dispatch();
+					//	}
+						if(target.indexOf("疾病信息")!= -1)
+						{
+							var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key,source,target, 0, 10);
+							recordSearchEvent.dispatch();
+						}
+						else 
+						{
+							var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source,target,0,20);
+							relationSearchEvent.dispatch();
+						}
+						
+						var displayInfoView:DisplayInfoView = new DisplayInfoView();
+					 	modelLocator.currentView = target;
+						displayInfoView.label = title;
+						tabNav.addChild(displayInfoView);
+						tabNav.selectedChild = displayInfoView;
+						tabNav.selectedChild.name = title; 
+					}
+//					else 
+//					{
+//						var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source,target,0,20);
+//						relationSearchEvent.dispatch();
+//					 	var displayInfoView:DisplayInfoView = new DisplayInfoView();
+//					 	modelLocator.currentView = target;
+//						displayInfoView.label = title;
+//						tabNav.addChild(displayInfoView);
+//						tabNav.selectedChild = displayInfoView;
+//						tabNav.selectedChild.name = title; 
+//					}
+				}
+				else 
+				{
+					var index:int = tabNav.getChildIndex(tabNav.getChildByName(title));
+					tabNav.selectedIndex = index;
+				}
+			}
+			
+			public function changeToGeneral()
+			{
+				//tabNav.selectedIndex = 0;
+				changeView("统计信息");
+			}
+			
+			
+		//	[Bindable]
+		//	private var entryItem:EntryItem = modelLocator.linChuang.entrylist[0];
+			
+		]]>
+	</mx:Script>
+	<mx:ViewStack id="introAndResultView" width="100%" height="100%" selectedIndex="1">
+		<view:LinchuangIntroView width="100%" height="100%" />
+			
+		<mx:VBox width="100%" height="100%" verticalGap="10" 
+			 paddingLeft="5" paddingTop="5" paddingRight="5" paddingBottom="5">
+			 <!--
+			<mx:LinkBar id="linkbar1" width="90%" height="30" color="haloBlue" fontSize="14" dataProvider="{tag1}"
+				 itemClick="changeView(event.label)">
+			</mx:LinkBar>
+			
+			<mx:HBox width="100%">
+				<mx:Spacer width="80%" />
+				<mx:Label text="进入统计信息" fontWeight="bold" fontSize="14" color="green" textDecoration="underline" buttonMode="true" click="changeToGeneral()" />
+			</mx:HBox>
+			-->
+			<flexlib:SuperTabNavigator id="tabNav" width="100%" height="100%" paddingBottom="10">
+			</flexlib:SuperTabNavigator>	
+		</mx:VBox>
+	</mx:ViewStack>	
+</mx:Panel>

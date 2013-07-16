@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" fontSize="12" width="400" height="40">
+	<mx:Script>
+		<![CDATA[
+			
+			import model.TsfModelLocator;
+			import vo.GeneralItem;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			private var _item:GeneralItem;
+			
+			[Bindable]
+			public function get item():GeneralItem
+			{
+				return _item;
+			}
+			public function set item(value:GeneralItem):void
+			{
+				_item = value;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:HBox id="title" width="100%" height="32" backgroundColor="#C9D7F1" verticalAlign="middle" cornerRadius="25">
+		<mx:Text text="{item.text}" width="60%" fontSize="14">
+		</mx:Text>
+		<mx:Button label="原文信息" />
+		<mx:Button label="统计分析" />
+	</mx:HBox>
+</mx:Canvas>

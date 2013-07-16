@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+	<domain name="临床">
+		<entrylist>
+			<entry>
+				<label>疾病名称</label>     <!--入口名称 -->
+				<uri>http://cintcm.ac.cn/onto#wmdiseasename</uri>   <!--西医疾病名称 -->
+				<uri>http://cintcm.ac.cn/onto#tcmdiseasename</uri>  <!--中医疾病名称 -->
+				<tab>
+					<item>
+						<label>疾病信息</label>
+						<id>1</id>
+					</item>
+					<item>
+						<label>临床研究</label>
+						<id>2</id>
+					</item>
+					<item>
+						<label>相关症状</label>
+						<id>3</id>
+					</item>
+					<item>
+						<label>相关症候</label>
+						<id>5</id>
+					</item>
+					<item>
+						<label>治疗方案</label>
+						<id>6</id>
+					</item>
+					<item>
+						<label>汇总</label>
+						<id>7</id>
+					</item>
+				</tab>
+			</entry>
+			
+			<entry>
+				<label>症状名称</label>   <!--入口名称 -->
+				<tab>
+					<item>
+						<label>症状信息</label>
+						<value></value>
+					</item>
+					<item>
+						<label>相关疾病</label>
+						<value></value>
+					</item>
+					<item>
+						<label>相关症候</label>
+						<value></value>
+					</item>
+					<item>
+						<label>检测指标</label>
+						<value></value>
+					</item>
+					<item>
+						<label>治疗方案</label>
+						<value></value>
+					</item>
+				</tab>
+			</entry>
+			
+			<entry>
+				<label>症候名称</label>    <!--入口名称 -->
+				<uri></uri>   <!-- -->
+			</entry>
+			
+			<entry>
+				<label>药物名称</label>    <!--入口名称 -->
+				<uri></uri>   <!-- -->
+			</entry>
+		</entrylist>
+		
+		<tableColumn>
+			<table>
+				<label>疾病信息</label>
+				<column>
+					<head>序号</head>
+					<field>id</field>
+				</column>
+				<column>
+					<head>疾病名称</head>
+					<field>jbmc</field>
+				</column>
+				<column>
+					<head>常见原发病</head>
+					<field>cjyfb</field>
+				</column>
+				<column>
+					<head>常见并发症</head>
+					<field>cjbfz</field>
+				</column>
+				<column>
+					<head>常见症候</head>
+					<field>cjzh</field>
+				</column>
+				<column>
+					<head>常见症状</head>
+					<field>cjzz</field>
+				</column>
+			</table>
+		</tableColumn>
+		
+		<association>
+			<item>
+				<label>疾病名称</label>
+				<uri>http://cintcm.ac.cn/onto#TCMDisease</uri>
+				<relation>
+					<label></label>
+				</relation>
+			</item>
+			<item>
+				<label>临床研究名称</label>
+				<uri></uri>
+			</item>
+			<item>
+				<label>症状名称</label>
+				<uri>http://cintcm.ac.cn/onto#Symptom</uri>
+			</item>
+			<item>
+				<label>症候名称</label>
+				<uri>http://cintcm.ac.cn/onto#symptomname</uri>
+			</item>
+		</association>
+		
+	</domain>
+</app>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="completed()">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.controls.Alert;
+			
+			[Bindable]
+			public var xuhao:ArrayCollection = new ArrayCollection;
+			
+			public var sources:Array = new Array();
+			
+			public function completed():void
+			{
+				StyleManager.getStyleDeclaration("ToolTip").setStyle("fontSize",12);
+			}
+			
+			public function init(result:XML):void
+			{
+				var count:int = 0;
+				var array:Array = new Array();
+				for each(var node:XML in result..img)
+				{
+					count++;
+					array.push(count);
+					sources.push(node..source);
+				}
+				xuhao = new ArrayCollection(array);
+				image.source = sources[0];
+			}
+			
+			private function showPic():void
+			{
+				image.source = sources[linkbar.selectedIndex];
+			}
+			
+			private function showSourcePic():void
+			{
+				var url:String = sources[linkbar.selectedIndex];
+				var urlRequest:URLRequest = new URLRequest(url);
+				navigateToURL(urlRequest);
+				
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%" 
+		paddingLeft="20" paddingTop="20" paddingRight="20" paddingBottom="20">	
+		<mx:LinkBar id="linkbar" dataProvider="{xuhao}" itemClick="showPic()" disabledColor="#999999"/>
+		<mx:Image id="image" width="100%" height="100%" click="showSourcePic()" buttonMode="true"
+			 toolTip="点击查看原图" />
+	</mx:VBox>
+</mx:Canvas>

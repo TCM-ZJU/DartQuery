@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" horizontalGap="0" horizontalAlign="center" verticalAlign="middle" creationComplete="init()">
+	<mx:Metadata>
+		[Event(name="change", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			private var isCreated:Boolean = false;
+			[Bindable]
+			private var preButtonBarAcc:Array = ["1...", "<<", "<"];
+			[Bindable]
+			private var froButtonBarAcc:Array = [">", ">>", "...0"];
+			[Bindable]
+			private var togBarAcc:Array = [];
+			
+			private var _recordCount:int = 0;
+			[Bindable]
+			public function get recordCount():int
+			{
+				return _recordCount;
+			}
+			public function set recordCount(value:int):void
+			{
+				if (value >= 0)
+				{
+					_recordCount = value;
+					pageCount = Math.ceil(_recordCount/_recordNumPerPage);
+					recreate();
+				}
+			}
+			
+			private var _recordNumPerPage:int = 20;
+			[Bindable]
+			public function get recordNumPerPage():int
+			{
+				return _recordNumPerPage;
+			}
+			public function set recordNumPerPage(value:int):void
+			{
+				if (value > 0)
+				{
+					_recordNumPerPage = value;
+					pageCount = Math.ceil(_recordCount/_recordNumPerPage);
+					recreate();
+				}
+			}
+			
+			private var _pageCount:int = 0;
+			[Bindable]
+			public function get pageCount():int
+			{
+				return _pageCount;
+			}
+			public function set pageCount(value:int):void
+			{
+				_pageCount = value;
+			}
+			
+			private var _showPageNum:int = 5;
+			[Bindable]
+			public function get showPageNum():int
+			{
+				return _showPageNum;
+			}
+			public function set showPageNum(value:int):void
+			{
+				if (_showPageNum != value)
+				{
+					_showPageNum = value;
+					recreate();
+				}
+			}
+			
+			private var _currentPageIndex:int = 1;
+			[Bindable]
+			public function get currentPageIndex():int
+			{
+				return _currentPageIndex;
+			}
+			public function set currentPageIndex(value:int):void
+			{
+				if (value < 1)
+				{
+					_currentPageIndex = 1;
+				}
+				else if (value > _pageCount)
+				{
+					_currentPageIndex = _pageCount;
+				}
+				else
+				{
+					_currentPageIndex = value;
+				}
+				recreate();
+			}
+			
+			public function recreate():void
+			{
+				if (isCreated)
+				{
+					froButtonBarAcc = [">", ">>", "..." + _pageCount];
+					var start:int;
+					var end:int;
+					var index:int;
+					var buttonNum:int = (_pageCount < _showPageNum) ? _pageCount : _showPageNum;
+					if (_currentPageIndex <= buttonNum/2)
+					{
+						start = 1;
+						end = buttonNum < _pageCount ? buttonNum : _pageCount;
+					}
+					else if (_currentPageIndex > _pageCount - buttonNum/2)
+					{
+						start = _pageCount - buttonNum  > 0 ? _pageCount - buttonNum + 1 : 1;
+						end = _pageCount;
+					}
+					else
+					{
+						start = _currentPageIndex - buttonNum/2 + 1;
+						end = _currentPageIndex + buttonNum/2;
+					}
+					if (end < 1)
+					{
+						togBarAcc = [];
+					}
+					else
+					{
+						togBarAcc = new Array(end - start + 1);
+						for (var i:int = start; i <= end; i++)
+						{
+							togBarAcc[i - start] = i;
+							if (i == _currentPageIndex)
+							{
+								index = i - start;
+							}
+						}
+//						pageSelectBar.selectedIndex = index;
+						callLater(setIndex, [index]);
+					}
+				}
+			}
+			
+			private function setIndex(value:int):void
+			{
+				pageSelectBar.selectedIndex = value;
+			}
+			
+			private function init():void
+			{
+				isCreated = true;
+				recreate();
+				jumpText.text = "";
+			}
+			
+			public function reset():void
+			{
+			//	_recordNumPerPage = 10;
+			//	_showPageNum = 10;
+				_currentPageIndex = 1;
+			//	pageCount = Math.ceil(_recordCount/_recordNumPerPage);
+				recreate();
+				jumpText.text = "";
+			}
+			
+			private function pageSelectBarItemClickHandler(event:ItemClickEvent):void
+			{
+				selectPage(togBarAcc[event.index]);
+			}
+			
+			private function preButtonBarItemClickHandler(event:ItemClickEvent):void
+			{
+				if (event.index == 0)
+				{
+					selectPage(1);
+				}
+				else if (event.index == 1)
+				{
+					selectPage(togBarAcc[pageSelectBar.selectedIndex] - _showPageNum);
+				}
+				else
+				{
+					selectPage(togBarAcc[pageSelectBar.selectedIndex] - 1);
+				}
+			}
+			
+			private function froButtonBarItemClickHandler(event:ItemClickEvent):void
+			{
+				if (event.index == 0)
+				{
+					selectPage(togBarAcc[pageSelectBar.selectedIndex] + 1);
+				}
+				else if (event.index == 1)
+				{
+					selectPage(togBarAcc[pageSelectBar.selectedIndex] + _showPageNum);
+				}
+				else
+				{
+					selectPage(_pageCount);
+				}
+			}
+			
+			private function selectPage(pageIndex:int):void
+			{
+				if (_currentPageIndex != pageIndex)
+				{
+					currentPageIndex = pageIndex;
+					dispatchEvent(new Event("change"));
+				}
+			}
+			
+			private function enterKeyDownHandler(event:KeyboardEvent):void
+			{
+				if (event.keyCode == 13)
+				{
+					numValidator.validate();
+				}
+			}
+		]]>
+	</mx:Script>
+
+    <mx:NumberValidator id="numValidator" source="{jumpText}" property="text" exceedsMaxError="{'不能大于最大页码' + pageCount}" lowerThanMinError="不能小于最小页码1" integerError="必须为整数" negativeError="不能为负数" invalidCharError="无效字符" invalidFormatCharsError="无效字符"
+        minValue="1" maxValue="{pageCount}" domain="int" allowNegative="false"
+        trigger="{jumpButton}" triggerEvent="click"
+        valid="selectPage(int(jumpText.text));"/>
+	<mx:ButtonBar id="preButtonBar" dataProvider="{preButtonBarAcc}" buttonMode="true" itemClick="preButtonBarItemClickHandler(event)" styleName="navPreButtonBar" fontSize="11"/>
+	<mx:ToggleButtonBar id="pageSelectBar" dataProvider="{togBarAcc}" buttonMode="true" itemClick="pageSelectBarItemClickHandler(event)" styleName="navToggleButtonBar" fontSize="11"/>
+	<mx:ButtonBar id="froButtonBar" dataProvider="{froButtonBarAcc}" buttonMode="true" itemClick="froButtonBarItemClickHandler(event)" styleName="navFroButtonBar" fontSize="11"/>
+	<mx:LinkButton id="jumpButton" label="跳至" buttonMode="true" textAlign="right" fontSize="12"/>
+	<mx:TextInput id="jumpText" width="30" text="20" fontSize="12" keyDown="enterKeyDownHandler(event)"/>
+</mx:HBox>

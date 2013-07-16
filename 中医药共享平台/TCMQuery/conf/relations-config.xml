@@ -1,0 +1,1605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+	<domain name="临床">
+		<param>
+    	<variable label="疾病">?jb</variable>
+    	<variable label="原发病">?jb</variable>
+    	<variable label="并发症">?jb</variable>
+			<variable label="症状">?zz</variable>
+			<variable label="证候">?zh</variable>
+			<variable label="中药药方">?yflf</variable>
+			<variable label="治疗方剂">?yflf</variable>
+			<variable label="药方名称">?yflf</variable>
+			<variable label="治则">?yflf</variable>
+			<variable label="西药药方">?xylf</variable>
+			<variable label="临床研究">?lcyj</variable>
+			<variable label="对照组">?dzz</variable>
+			<variable label="临床诊疗">?lczl</variable>
+			<variable label="检查项目">?syjc</variable>
+			<variable label="实验检查">?syjc</variable>
+			<variable label="治疗方案">?zlfa</variable>
+			<variable label="针灸疗法">?zjlf</variable>
+			<variable label="针灸方法">?zjlf</variable>
+			<variable label="针灸器械">?zjlf</variable>
+			<variable label="针灸手法">?zjlf</variable>
+			<variable label="药方疗法">?yflf</variable>
+			<variable label="按摩疗法">?amlf</variable>
+			<variable label="按摩手法">?amlf</variable>
+			<variable label="按摩方法">?amlf</variable>
+			<variable label="西药疗法">?xylf</variable>
+			<variable label="其他疗法">?qtlf</variable>
+			<variable label="给药方式">?yflf</variable>
+			<variable label="药方剂型">?yflf</variable>
+			<variable label="单味药">?herb</variable>
+			<variable label="药物剂量">?herb</variable>
+			<variable label="穴位">?point</variable>
+			<variable label="文献">?lcwx</variable>
+			<variable label="原文">?lcyw</variable>
+  	</param>
+  	
+  	<identity>
+  		<variable>原发病</variable>
+  		<variable>并发症</variable>
+  		<variable>检查项目</variable>
+  		<variable>给药方式</variable>
+  		<variable>药方剂型</variable>
+  		<variable>药物剂量</variable>
+  		<variable>针灸方法</variable>
+  		<variable>针灸器械</variable>
+  		<variable>针灸手法</variable>
+  		<variable>按摩手法</variable>
+  		<variable>按摩方法</variable>
+  		<variable>治则</variable>
+  		<variable>原文</variable>
+  	</identity>
+		
+		<ontologies>
+			<ontology label="疾病" variable="?jb">
+				<ontologyURI>http://cintcm.ac.cn/onto#TCMDisease</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="疾病名称" variable="?jb_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+						<column>JBMC</column>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="原发病" variable="?yfb">http://cintcm.ac.cn/onto#yuanfabingshi</ontologyURI>				
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="并发症" variable="?bfz">http://cintcm.ac.cn/onto#bingfazhengshi</ontologyURI>				
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="常见症状" variable="?cjzz">http://cintcm.ac.cn/onto#changjianzhengzhuang</ontologyURI>				
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="常见证候" variable="?cjzh">http://cintcm.ac.cn/onto#changjianzhenghou</ontologyURI>				
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="有证候" variable="?zh">http://cintcm.ac.cn/onto#youzhenghou</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZH</table>
+						<joinref>hasZhengHou</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="有症状" variable="?zz">http://cintcm.ac.cn/onto#youzhengzhuang</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_LCZZ</table>
+						<joinref>hasZhengZhuang</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?qtlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_QTLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?xylf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_XYLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?yflf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_YFLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?zjlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZJLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?amlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_AMLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+            			<ontologyURI label="有临床研究" variable="?lcyj">http://cintcm.ac.cn/onto#youlinchuangyanjiu</ontologyURI>
+           		 		<table>{http://ccnt.cn/tcm}tcm.JZB_LCYJ</table>
+            			<joinref>hasLinChuangYanJiu</joinref>
+          			</relation>
+					<relation>
+            			<ontologyURI label="治疗方案" variable="?zlfa">http://cintcm.ac.cn/onto#hasLinChuangYanJiuThroughLiaoFa</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_LCYJ</table>
+            			<joinref>hasLinChuangYanJiuThroughLiaoFa</joinref>
+          			</relation>
+					<relation>
+            			<ontologyURI label="相关穴位" variable="?point">http://cintcm.ac.cn/onto#xiangguanxuewei</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_XW</table>
+            			<joinref>duixianghasxuewei</joinref>
+          			</relation>
+          			<relation>
+            			<ontologyURI label="相关药物" variable="?herb">http://cintcm.ac.cn/onto#xiangguanyaowu</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_YW</table>
+            			<joinref>duixianghasyaowu</joinref>
+          			</relation>
+				</relations>
+				<relationPath target="?syjc">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有实验检查" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?lcwx">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有临床文献" variable="?lcwx"></path>
+				</relationPath>
+			</ontology>
+				
+			<ontology label="证候" variable="?zh">
+				<ontologyURI>http://cintcm.ac.cn/onto#Syndrome</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="证候名称" variable="?zh_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+						<column>ZHMC</column>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="相关疾病" variable="?jb">http://cintcm.ac.cn/onto#xiangguanjibing</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_JB</table>
+						<joinref>hasJiBing</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="有症状" variable="?zz">http://cintcm.ac.cn/onto#youzhengzhuang</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_LCZZ</table>
+						<joinref>hasZhengZhuang</joinref>
+					</relation>
+					<relation>
+            			<ontologyURI label="有临床研究" variable="?lcyj">http://cintcm.ac.cn/onto#youlinchuangyanjiu</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}tcm.JZB_LCYJ</table>
+            			<joinref>hasLinChuangYanJiu</joinref>
+          			</relation>
+					<relation>
+            			<ontologyURI label="治疗方案" variable="?zlfa">http://cintcm.ac.cn/onto#hasLinChuangYanJiuThroughLiaoFa</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_LCYJ</table>
+            			<joinref>hasLinChuangYanJiuThroughLiaoFa</joinref>
+          			</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?qtlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_QTLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?xylf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_XYLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?yflf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_YFLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?zjlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZJLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?amlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_AMLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+            			<ontologyURI label="相关穴位" variable="?point">http://cintcm.ac.cn/onto#xiangguanxuewei</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_XW</table>
+            			<joinref>duixianghasxuewei</joinref>
+          			</relation>
+          			<relation>
+            			<ontologyURI label="相关药物" variable="?herb">http://cintcm.ac.cn/onto#xiangguanyaowu</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_YW</table>
+            			<joinref>duixianghasyaowu</joinref>
+          			</relation>
+				</relations>
+				<relationPath target="?syjc">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有实验检查" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?lcwx">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有临床文献" variable="?lcwx"></path>
+				</relationPath>
+      </ontology>
+			
+			<ontology label="症状" variable="?zz">
+				<ontologyURI>http://cintcm.ac.cn/onto#Symptom</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="症状名称" variable="?zz_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+						<column>ZZMC</column>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="有证候" variable="?zh">http://cintcm.ac.cn/onto#youzhenghou</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZH</table>
+						<joinref>hasZhengHou</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="相关疾病" variable="?jb">http://cintcm.ac.cn/onto#xiangguanjibing</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_JB</table>
+						<joinref>hasJiBing</joinref>
+					</relation>
+					<relation>
+            			<ontologyURI label="有临床研究" variable="?lcyj">http://cintcm.ac.cn/onto#youlinchuangyanjiu</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}tcm.JZB_LCYJ</table>
+            			<joinref>hasLinChuangYanJiu</joinref>
+          			</relation>
+					<relation>
+            			<ontologyURI label="治疗方案" variable="?zlfa">http://cintcm.ac.cn/onto#hasLinChuangYanJiuThroughLiaoFa</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_LCYJ</table>
+            			<joinref>hasLinChuangYanJiuThroughLiaoFa</joinref>
+          			</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?qtlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_QTLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?xylf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_XYLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?yflf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_YFLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?zjlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_ZJLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="被疗法治疗" variable="?amlf">http://cintcm.ac.cn/onto#isTreatedByTherapy</ontologyURI>
+						<table>{http://ccnt.cn/tcm}tcm.JMZ_AMLF</table>
+						<joinref>BeiZhiLiao</joinref>
+					</relation>
+					<relation>
+            			<ontologyURI label="相关穴位" variable="?point">http://cintcm.ac.cn/onto#xiangguanxuewei</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_XW</table>
+            			<joinref>duixianghasxuewei</joinref>
+          			</relation>
+          			<relation>
+            			<ontologyURI label="相关药物" variable="?herb">http://cintcm.ac.cn/onto#xiangguanyaowu</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}jmz.JMZ_YW</table>
+            			<joinref>duixianghasyaowu</joinref>
+          			</relation>
+				</relations>
+				<relationPath target="?syjc">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有实验检查" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?lcwx">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有临床文献" variable="?lcwx"></path>
+				</relationPath>
+      </ontology>	
+			
+			<ontology label="治疗方案" variable="?zlfa">
+				<ontologyURI>http://cintcm.ac.cn/onto#linchuangyanjiu</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="治疗方案名称" variable="?lcyj_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+			</ontology>
+			
+			<ontology label="临床研究" variable="?lcyj">
+				<ontologyURI>http://cintcm.ac.cn/onto#linchuangyanjiu</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="临床研究名称" variable="?lcyj_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+           		 		<ontologyURI label="专题名" variable="?zt_name">http://cintcm.ac.cn/onto#zhuantiming</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+						<ontologyURI label="临床研究单位" variable="?affiliation">http://cintcm.ac.cn/onto#linchuangyanjiudanwei</ontologyURI>
+				  	</ontoProp>
+					<ontoProp>
+						<ontologyURI label="研究方法" variable="?method">http://cintcm.ac.cn/onto#yanjiufangfa</ontologyURI>
+			  		</ontoProp>
+         			<ontoProp>
+            			<ontologyURI label="研究分组" variable="?yjgroup">http://cintcm.ac.cn/onto#yanjiufenzu</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="病例采集时间" variable="?collection">http://cintcm.ac.cn/onto#binglicaijishijian</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="年龄组" variable="?age">http://cintcm.ac.cn/onto#nianlingzu</ontologyURI>
+				  	</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="观察组总例数" variable="?total">http://cintcm.ac.cn/onto#guanchazuzonglishu</ontologyURI>
+         	 		</ontoProp>
+				  	<ontoProp>
+						<ontologyURI label="男性观察例数" variable="?male">http://cintcm.ac.cn/onto#nanxingguanchalishu</ontologyURI>
+				  	</ontoProp>
+					<ontoProp>
+						<ontologyURI label="女性观察例数" variable="?female">http://cintcm.ac.cn/onto#nvxingguanchalishu</ontologyURI>
+			  		</ontoProp>
+					<ontoProp>
+						<ontologyURI label="结果" variable="?result">http://cintcm.ac.cn/onto#jieguo</ontologyURI>
+			  		</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="急地区" variable="?district">http://cintcm.ac.cn/onto#jidiqu</ontologyURI>
+			  		</ontoProp>
+			  		<ontoProp>
+						<ontologyURI label="急病因" variable="?pathogeny">http://cintcm.ac.cn/onto#jibingyin</ontologyURI>
+			  		</ontoProp>
+			  		<ontoProp>
+						<ontologyURI label="急传染源" variable="?infection">http://cintcm.ac.cn/onto#jichuanranyuan</ontologyURI>
+			  		</ontoProp>
+					<ontoProp>
+						<ontologyURI label="急传染途径" variable="?approach">http://cintcm.ac.cn/onto#jichuanrantujing</ontologyURI>
+			  		</ontoProp>
+			  		<ontoProp>
+						<ontologyURI label="急相关因素" variable="?factor">http://cintcm.ac.cn/onto#jixiangguanyinsu</ontologyURI>
+			  		</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="有对照组" variable="?dzz">http://cintcm.ac.cn/onto#youduizhaozu</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}tcm.JMZ_DZZ</table>
+            			<joinref>hasDuiZhaoZU</joinref>
+					</relation>
+					<relation>
+		            	<ontologyURI label="有实验检查" variable="?syjc">http://cintcm.ac.cn/onto#youshiyanjiancha</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}tcm.JZB_SYJC</table>
+           		 		<joinref>hasShiYanJianCha</joinref>			
+					</relation>
+					<relation>
+				    	<ontologyURI label="有临床诊疗" variable="?lczl">http://cintcm.ac.cn/onto#youlinchuangzhenliao</ontologyURI>
+            			<table>{http://ccnt.cn/tcm}tcm.JMZ_LCZL</table>
+            			<joinref>hasLinChuangZhenLiao</joinref>
+					</relation>
+					<relation>
+						<ontologyURI label="有临床文献" variable="?lcwx">http://cintcm.ac.cn/onto#youlinchuangwenxian</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="有临床原文" variable="?lcyw">http://cintcm.ac.cn/onto#hasLinChuangTuPian</ontologyURI>
+					</relation>
+				</relations>
+			</ontology>
+			
+			
+      <ontology label="对照组" variable="?dzz">
+				<ontologyURI>http://cintcm.ac.cn/onto#duizhaozu</ontologyURI>
+        		<ontoProps>
+					<ontoProp>
+						<ontologyURI label="对照组名称" variable="?name">http://cintcm.ac.cn/onto#duizhaozumingcheng</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="治疗药物" variable="?medcine">http://cintcm.ac.cn/onto#duizhaozuzhiliaoyaowu</ontologyURI>    
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="例数" variable="?count">http://cintcm.ac.cn/onto#lishu</ontologyURI>
+					</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="年龄" variable="?age">http://cintcm.ac.cn/onto#nianling</ontologyURI>
+          			</ontoProp>      			
+					<ontoProp>
+						<ontologyURI label="检测" variable="?detection">http://cintcm.ac.cn/onto#jiance</ontologyURI>
+					</ontoProp>						
+				</ontoProps>
+			</ontology>
+			
+			<ontology label="临床诊疗" variable="?lczl">
+				<ontologyURI>http://cintcm.ac.cn/onto#linchuangzhenliao</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="病症状名称" variable="?name">http://cintcm.ac.cn/onto#bingzhengzhuangmingcheng</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="诊断方法" variable="?method">http://cintcm.ac.cn/onto#zhenduanfangfa</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="总有效率" variable="?effect">http://cintcm.ac.cn/onto#zongyouxiaolv</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="中医诊断仪器" variable="?instrument">http://cintcm.ac.cn/onto#zhongyizhenduanyiqi</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="诊断指标分类" variable="?classification">http://cintcm.ac.cn/onto#zhenduanzhibiaofenlei</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="诊断标准来源" variable="?zd_source">http://cintcm.ac.cn/onto#zhenduanbiaozhunlaiyuan</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="疗效标准" variable="?standard">http://cintcm.ac.cn/onto#liaoxiaobiaozhun</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="疗效标准来源" variable="?lx_source">http://cintcm.ac.cn/onto#liaoxiaobiaozhunlaiyuan</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="指标权重" variable="?weight">http://cintcm.ac.cn/onto#zhibiaoquanzhong</ontologyURI>
+          			</ontoProp>          			         			
+          			<ontoProp>
+            			<ontologyURI label="指标项目" variable="?target">http://cintcm.ac.cn/onto#zhibiaoxiangmu</ontologyURI>
+					</ontoProp>         			
+        		</ontoProps>
+			</ontology>
+			
+			<ontology label="实验检查" variable="?syjc">
+				<ontologyURI>http://cintcm.ac.cn/onto#shiyanjiacha</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="检查项目" variable="?content">http://cintcm.ac.cn/onto#jianchaxiangmu</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="检查时间" variable="?time">http://cintcm.ac.cn/onto#shijian</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="观察分组" variable="?fenzu">http://cintcm.ac.cn/onto#guanchafenzu</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="变化指标" variable="?indication">http://cintcm.ac.cn/onto#shiyanjianchabianhuazhibiao</ontologyURI>
+          			</ontoProp>        			
+				</ontoProps>
+			</ontology>	
+			
+			<ontology label="针灸疗法" variable="?zjlf">
+				<ontologyURI>http://cintcm.ac.cn/onto#needletherapy</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="针灸方法" variable="?method">http://cintcm.ac.cn/onto#acupuncturemethod</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="针灸器械" variable="?instrument">http://cintcm.ac.cn/onto#Instrument</ontologyURI>
+          			</ontoProp>
+         			<ontoProp>
+            			<ontologyURI label="针灸手法" variable="?hand">http://cintcm.ac.cn/onto#Technique</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="针刺次数" variable="?time">http://cintcm.ac.cn/onto#Number</ontologyURI>
+          			</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+            			<ontologyURI label="疗法治疗" variable="?jb">http://cintcm.ac.cn/onto#treatsByTherapy</ontologyURI>
+          			</relation>
+          			<relation>
+            			<ontologyURI label="疗法治疗" variable="?zz">http://cintcm.ac.cn/onto#treatsByTherapy</ontologyURI>
+					</relation>
+          			<relation>
+            			<ontologyURI label="疗法治疗" variable="?zh">http://cintcm.ac.cn/onto#treatsByTherapy</ontologyURI>
+          			</relation>
+          			<relation>
+            			<ontologyURI label="有临床研究" variable="?lcyj">http://cintcm.ac.cn/onto#youlinchuangyanjiu</ontologyURI>
+          			</relation>
+				</relations>
+			</ontology>
+			
+			<ontology label="按摩疗法" variable="?amlf">
+				<ontologyURI>http://cintcm.ac.cn/onto#massage</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="按摩方法" variable="?method">http://cintcm.ac.cn/onto#Method</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="按摩手法" variable="?hand">http://cintcm.ac.cn/onto#Technique</ontologyURI>
+          			</ontoProp>
+         			<ontoProp>
+            			<ontologyURI label="按摩时间" variable="?time">http://cintcm.ac.cn/onto#Time</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="按摩次数" variable="?number">http://cintcm.ac.cn/onto#Number</ontologyURI>
+          			</ontoProp>
+				</ontoProps>
+			</ontology>
+			
+			<ontology label="药方疗法" variable="?yflf">
+				<ontologyURI>http://cintcm.ac.cn/onto#zhongyaozhiliao</ontologyURI>
+				<ontoProps>
+          			<ontoProp>
+            			<ontologyURI label="药方名称" variable="?yfmc">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="给药方式" variable="?gyfs">http://cintcm.ac.cn/onto#liaofageiyaofangshi</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="药方剂型" variable="?yfjx">http://cintcm.ac.cn/onto#yaojileixing</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="治则" variable="?zhize">http://cintcm.ac.cn/onto#zhizemiaoshu</ontologyURI>
+          			</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+          	<ontologyURI label="疗法治疗" variable="?jb">http://cintcm.ac.cn/onto#treatsByTherapy</ontologyURI>
+          </relation>
+          <relation>
+          	<ontologyURI label="疗法治疗" variable="?zz">http://cintcm.ac.cn/onto#treatsByTherapy</ontologyURI>
+					</relation>
+          <relation>
+          	<ontologyURI label="疗法治疗" variable="?zh">http://cintcm.ac.cn/onto#treatsByTherapy</ontologyURI>
+          </relation>
+          <relation>
+          	<ontologyURI label="有临床研究" variable="?lcyj">http://cintcm.ac.cn/onto#youlinchuangyanjiu</ontologyURI>
+         	</relation>
+         	<relation>
+            <ontologyURI label="使用药物" variable="?herb">http://cintcm.ac.cn/onto#shiyongyaowu</ontologyURI>
+          </relation>
+				</relations>
+				<relationPath target="?syjc">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有实验检查" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?lcwx">
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有临床文献" variable="?lcwx"></path>
+				</relationPath>
+			</ontology>
+			
+			<ontology label="西药疗法" variable="?xylf">
+				<ontologyURI>http://cintcm.ac.cn/onto#xiyaozhiliao</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="药物名称" variable="?ywmc">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="给药方式" variable="?gyfs">http://cintcm.ac.cn/onto#liaofageiyaofangshi</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="药剂类型" variable="?ywjx">http://cintcm.ac.cn/onto#yaojileixing</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+           	 			<ontologyURI label="给药时间" variable="?gysj">http://cintcm.ac.cn/onto#geiyaoshijian</ontologyURI>
+          			</ontoProp>		
+				</ontoProps>
+			</ontology>
+			
+			<ontology label="其他疗法" variable="?qtlf">
+				<ontologyURI>http://cintcm.ac.cn/onto#xiyaozhiliao</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="疗法名称" variable="?ffmc">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+          			</ontoProp>
+          			<ontoProp>
+            			<ontologyURI label="方法描述" variable="?ffms">http://cintcm.ac.cn/onto#Description</ontologyURI>
+          			</ontoProp>
+				</ontoProps>
+			</ontology>
+			
+			<ontology label="单味药" variable="?herb">
+				<ontologyURI>http://cintcm.ac.cn/onto#herb</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="单味药名称" variable="?herb_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="药物剂量" variable="?ywjl">http://cintcm.ac.cn/onto#dosage</ontologyURI>
+          			</ontoProp>		
+					<ontoProp>
+            			<ontologyURI label="剂量单位" variable="?jldw">http://cintcm.ac.cn/onto#dosageunit</ontologyURI>
+          			</ontoProp>	
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="药物相关疗法" variable="?yflf">http://cintcm.ac.cn/onto#MedicalRelatedTherapy</ontologyURI>
+					</relation>
+				</relations>
+				<relationPath target="?jb">
+					<path label="相关疗法" variable="?yflf"></path>
+					<path label="相关疾病" variable="?jb"></path>
+				</relationPath>
+				<relationPath target="?zz">
+					<path label="相关疗法" variable="?yflf"></path>
+					<path label="相关症状" variable="?zz"></path>
+				</relationPath>
+				<relationPath target="?zh">
+					<path label="相关疗法" variable="?yflf"></path>
+					<path label="相关证候" variable="?zh"></path>
+				</relationPath>
+				<relationPath target="?lcyj">
+					<path label="相关疗法" variable="?yflf"></path>
+					<path label="相关临床研究" variable="?lcyj"></path>
+				</relationPath>
+				<relationPath target="?syjc">
+					<path label="相关疗法" variable="?yflf"></path>
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有实验检查" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?lcwx">
+					<path label="相关疗法" variable="?yflf"></path>
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有临床文献" variable="?lcwx"></path>
+				</relationPath>
+			</ontology>
+			
+			<ontology label="穴位" variable="?point">
+				<ontologyURI>http://cintcm.ac.cn/onto#point</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            			<ontologyURI label="穴位名称" variable="?point_name">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+          			</ontoProp>
+					<ontoProp>
+            			<ontologyURI label="穴位类型" variable="?xwlx">http://cintcm.ac.cn/onto#xueweileixing</ontologyURI>
+          			</ontoProp>		
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="穴位相关按摩疗法" variable="?amlf">http://cintcm.ac.cn/onto#xueweixiangguananmoliaofa</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="穴位相关针灸疗法" variable="?zjlf">http://cintcm.ac.cn/onto#xueweixiangguanzhenjiuliaofa</ontologyURI>
+					</relation>
+				</relations>
+				<relationPath target="?jb">
+					<path label="相关疗法" variable="?zjlf"></path>
+					<path label="相关疾病" variable="?jb"></path>
+				</relationPath>
+				<relationPath target="?zz">
+					<path label="相关疗法" variable="?zjlf"></path>
+					<path label="相关症状" variable="?zz"></path>
+				</relationPath>
+				<relationPath target="?zh">
+					<path label="相关疗法" variable="?zjlf"></path>
+					<path label="相关证候" variable="?zh"></path>
+				</relationPath>
+				<relationPath target="?lcyj">
+					<path label="相关疗法" variable="?zjlf"></path>
+					<path label="相关临床研究" variable="?lcyj"></path>
+				</relationPath>
+				<relationPath target="?syjc">
+					<path label="相关疗法" variable="?zjlf"></path>
+					<path label="相关临床研究" variable="?lcyj"></path>
+					<path label="有实验检查" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?lcwx">
+					<path label="相关疗法" variable="?zjlf"></path>
+					<path label="有临床研究" variable="?lcyj"></path>
+					<path label="有临床文献" variable="?lcwx"></path>
+				</relationPath>
+			</ontology>
+			
+			<ontology label="临床文献" variable="?lcwx">
+				<ontologyURI>http://cintcm.ac.cn/onto#wenxian</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            <ontologyURI label="文献卷" variable="?juan">http://cintcm.ac.cn/onto#wenxianjuan</ontologyURI>
+          </ontoProp>
+          <ontoProp>
+            <ontologyURI label="文献作者" variable="?zuozhe">http://cintcm.ac.cn/onto#wenxianzuozhe</ontologyURI>
+          </ontoProp>
+          <ontoProp>
+            <ontologyURI label="文献期" variable="?qi">http://cintcm.ac.cn/onto#wenxianqi</ontologyURI>
+          </ontoProp>
+          <ontoProp>
+            <ontologyURI label="文献年" variable="?nian">http://cintcm.ac.cn/onto#wenxiannian</ontologyURI>
+          </ontoProp>
+          <ontoProp>
+            <ontologyURI label="文献刊名" variable="?kanming">http://cintcm.ac.cn/onto#wenxiankanming</ontologyURI>
+          </ontoProp>
+          <ontoProp>
+            <ontologyURI label="概念词" variable="?timing">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+          </ontoProp>
+          <ontoProp>
+            <ontologyURI label="文献研究单位" variable="?danwei">http://cintcm.ac.cn/onto#wenxianyanjiudanwei</ontologyURI>
+          </ontoProp>
+				</ontoProps>			
+				<relations>
+					<relation>
+						<ontologyURI label="文献相关原文" variable="?lcyw">http://cintcm.ac.cn/onto#wenxianyouwenxianyuanwen</ontologyURI>
+					</relation>
+				</relations>	
+			</ontology>
+			
+			<ontology label="临床原文" variable="?lcyw">
+				<ontologyURI>http://cintcm.ac.cn/onto#wenxianyuanwen</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+            <ontologyURI label="原文" variable="?pic">http://cintcm.ac.cn/onto#tupianshuju</ontologyURI>
+          </ontoProp>
+          <ontoProp>
+            <ontologyURI label="概念词" variable="?ywmc">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+          </ontoProp>
+				</ontoProps>
+			</ontology>
+			
+		</ontologies>
+		
+		<views>
+			<grid name="疾病">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>疾病名称</label>
+					<field type="primary">jb_name</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关症状</label>
+					<field>link</field>
+				</column>
+				<column>
+					<label>相关证候</label>
+					<field>link</field>
+				</column>
+				<!--
+				<column>
+					<label>疾病信息</label>
+					<field>link</field>
+				</column>
+				-->
+			</grid>
+			
+			<grid name="症状">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>症状名称</label>
+					<field type="primary">zz_name</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关疾病</label>
+					<field>link</field>
+				</column>
+				<!--
+				<column>
+					<label>相关临床研究</label>
+					<field>link</field>
+				</column>
+				-->
+				<column>
+					<label>相关证候</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="证候">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>证候名称</label>
+					<field type="primary">zh_name</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关疾病</label>
+					<field>link</field>
+				</column>
+				<!--
+				<column>
+					<label>相关临床研究</label>
+					<field>link</field>
+				</column>
+				-->
+				<column>
+					<label>相关症状</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="临床研究">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<!--
+				<column>
+					<label>名称</label>
+					<field>source_name</field>
+				</column>
+				-->
+				<column>
+					<label>临床研究文献</label>
+					<field type="primary">lcyj_name</field>
+				</column>
+				<column>
+					<label>详细信息</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="治疗方案">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>方案来源</label>
+					<field type="primary">lcyj_name</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>详细信息</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="单味药">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>单味药名称</label>
+					<field type="primary">herb_name</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关治疗方剂</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="穴位">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>穴位名称</label>
+					<field type="primary">point_name</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关针灸方法</label>
+					<field>link</field>
+				</column>
+				<column>
+					<label>相关按摩方法</label>
+					<field>link</field>
+				</column>
+			</grid>
+			<!-- 新加部分-->
+			<grid name="治疗方剂">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>方剂名称</label>
+					<field type="primary">yfmc</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关单味药</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="西药药方">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>西药药方名称</label>
+					<field type="primary">ywmc</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="检查项目">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>检查项目名称</label>
+					<field>content</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="给药方式">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>给药方式</label>
+					<field>gyfs</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="药方剂型">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>药方剂型</label>
+					<field>yfjx</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="针灸方法">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>针灸方法</label>
+					<field>method</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="针灸手法">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>针灸手法</label>
+					<field>hand</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="针灸器械">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>针灸器械</label>
+					<field>instrument</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="按摩手法">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>按摩手法</label>
+					<field>hand</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="按摩方法">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>按摩方法</label>
+					<field>method</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="原发病">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>原发病</label>
+					<field>yfb</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="并发症">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>并发症</label>
+					<field>bfz</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="治则">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>治则</label>
+					<field>zhize</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+		</views>
+	</domain>
+	
+	<domain name="药理">
+		<param>
+			<variable label="研究药物">?yjyw</variable>
+			<variable label="给药方式">?yjyw</variable>
+			<variable label="药物剂型">?yjyw</variable>
+			<variable label="化学成分">?yjyw</variable>
+			<variable label="单味药">?yjyw</variable>
+			<variable label="方剂">?yjyw</variable>
+			<variable label="药物作用">?yjyw</variable>
+			<variable label="药理实验">?ylsy</variable>
+			<variable label="毒理实验">?dlsy</variable>
+			<variable label="对照组">?dzz</variable>
+			<variable label="对照药物">?dzz</variable>
+			<variable label="模型组">?mxz</variable>
+			<variable label="模型名称">?mxz</variable>
+			<variable label="实验对象">?sydx</variable>
+			<variable label="实验检测">?syjc</variable>
+			<variable label="临床药理">?lcyl</variable>
+			<variable label="研究对象">?ylsy</variable>
+			<variable label="功效与作用">?ylfl</variable>
+			<variable label="检测指标">?bhzb</variable>
+			<variable label="动物模型">?mxmc</variable>
+			<variable label="文献">?wenxian</variable>
+		</param>
+		
+		<identity>
+  	</identity>
+		
+		<ontologies>
+			<ontology label="研究药物" variable="?yjyw">
+				<ontologyURI>http://cintcm.ac.cn/onto#yanjiuyaowu</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="药物名称" variable="?ywmc" stat="true">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="药物类型" variable="?ywlx" type="cate" stat="true">http://cintcm.ac.cn/onto#yaowuleixing</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="药物作用" variable="?ylfl" stat="true">http://cintcm.ac.cn/onto#DrugClassification</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="给药方式" variable="?gyfs" stat="true">http://cintcm.ac.cn/onto#Usage</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="药物剂型" variable="?ywjx" stat="true">http://cintcm.ac.cn/onto#Formulation</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="单味药" variable="?danweiyao" stat="true">http://cintcm.ac.cn/onto#danweiyao</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="化学成分" variable="?hxcf" stat="true">http://cintcm.ac.cn/onto#Chemical</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="方剂" variable="?fangji" stat="true">http://cintcm.ac.cn/onto#Prescriptiondescription</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="药用部位" variable="?yybw">http://cintcm.ac.cn/onto#yaoyongbuwei</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="药物产地" variable="?ywcd">http://cintcm.ac.cn/onto#yaowuchandi</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="原植物" variable="?yzw">http://cintcm.ac.cn/onto#yuanzhiwu</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="有药理实验" variable="?ylsy">http://cintcm.ac.cn/onto#yaowuyoushiyan</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="有毒理实验" variable="?dlsy">http://cintcm.ac.cn/onto#yaowuyoushiyan</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="有对照组" variable="?dzz">http://cintcm.ac.cn/onto#yanjiuyaowuyouduizhaozu</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="药物相关药理" variable="?lcyl">http://cintcm.ac.cn/onto#yaowuyouyaoli</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="药物相关文献" variable="?wenxian">http://cintcm.ac.cn/onto#yaowuyouwenxian</ontologyURI>
+					</relation>
+				</relations>
+			</ontology>
+			
+			<ontology label="药理实验" variable="?ylsy">
+				<ontologyURI>http://cintcm.ac.cn/onto#zhongyaoyaolishiyan</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="对象名称" variable="?yldxmc" stat="true">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="对象类型" variable="?yldxlx" type="cate" stat="true">http://cintcm.ac.cn/onto#duixiangleixing</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="疾病证候" variable="?jbzh" stat="true">http://cintcm.ac.cn/onto#jibingzhenghou</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="疾病症状" variable="?jbzz" stat="true">http://cintcm.ac.cn/onto#jibingzhengzhuang</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="实验分组名称" variable="?fzmc" stat="true">http://cintcm.ac.cn/onto#shiyanfenzumingcheng</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="实验方法" variable="?syff" stat="true">http://cintcm.ac.cn/onto#shiyanfangfa</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="实验使用药物" variable="?yjyw">http://cintcm.ac.cn/onto#shiyanyongyao</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="实验有实验对象" variable="?sydx">http://cintcm.ac.cn/onto#shiyanyoushiyanduixiang</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="实验有实验检测" variable="?syjc">http://cintcm.ac.cn/onto#shiyanyoushiyanjiance</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="实验有模型组" variable="?mxz">http://cintcm.ac.cn/onto#yaolishiyanyoumoxingzu</ontologyURI>
+					</relation>
+				</relations>
+				<relationPath target="?lcyl">
+					<path label="有研究药物" variable="?yjyw"></path>
+					<path label="有临床药理" variable="?lcyl"></path>
+				</relationPath>
+				<relationPath target="?dlsy">
+					<path label="有研究药物" variable="?yjyw"></path>
+					<path label="有毒理实验" variable="?dlsy"></path>
+				</relationPath>
+				<relationPath target="?wenxian">
+					<path label="有研究药物" variable="?yjyw"></path>
+					<path label="有文献" variable="?wenxian"></path>
+				</relationPath>
+			</ontology>
+			
+			<ontology label="毒理实验" variable="?dlsy">
+				<ontologyURI>http://cintcm.ac.cn/onto#dulishiyan</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="毒性反应名称" variable="?dxfymc" stat="true" pref="true">http://cintcm.ac.cn/onto#duxingfanyingmingcheng</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="毒性反应分类" variable="?dxfyfl" stat="true">http://cintcm.ac.cn/onto#duxingfanyingfenlei</ontologyURI>
+					</ontoProp>				
+					<ontoProp>
+						<ontologyURI label="实验分组名称" variable="?syfzmc" stat="true">http://cintcm.ac.cn/onto#shiyanfenzumingcheng</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="实验方法" variable="?dlsyff" stat="true">http://cintcm.ac.cn/onto#shiyanfangfa</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="实验有实验检测" variable="?syjc">http://cintcm.ac.cn/onto#shiyanyoushiyanjiance</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="实验使用药物" variable="?yjyw">http://cintcm.ac.cn/onto#shiyanyongyao</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="实验有实验对象" variable="?sydx">http://cintcm.ac.cn/onto#shiyanyoushiyanduixiang</ontologyURI>
+					</relation>
+				</relations>
+			</ontology>
+			
+			<ontology label="对照组" variable="?dzz">
+				<ontologyURI>http://cintcm.ac.cn/onto#duizhaozu</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="对照组名称" variable="?dzzmc" stat="true">http://cintcm.ac.cn/onto#duizhaozumingcheng</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="对照药物" variable="?dzzzlyw" stat="true">http://cintcm.ac.cn/onto#duizhaozuzhiliaoyaowu</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="给药方式" variable="?dzzgyfs" stat="true">http://cintcm.ac.cn/onto#duizhaozugeiyaofangshi</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="药物剂型" variable="?dzzywjx" stat="true">http://cintcm.ac.cn/onto#duizhaozuyaowujixing</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="对照组参照药物" variable="?yjyw">http://cintcm.ac.cn/onto#duizhaozucanzhaoyaowu</ontologyURI>
+					</relation>
+				</relations>
+			</ontology>
+			
+			<ontology label="模型组" variable="?mxz">
+				<ontologyURI>http://cintcm.ac.cn/onto#moxingzu</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="模型名称" variable="?mxmc" stat="true">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="造模方法" variable="?zmff" stat="true">http://cintcm.ac.cn/onto#zaomofangfa</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="造模药物" variable="?zmyw" stat="true">http://cintcm.ac.cn/onto#zaomoyaowu</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="给药方式" variable="?mxgyfs" stat="true">http://cintcm.ac.cn/onto#moxingzugeiyaofangshi</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="药物剂型" variable="?mxywjx" stat="true">http://cintcm.ac.cn/onto#moxingzuyaowujixing</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="模型制备成功指标" variable="?cgzb" stat="true">http://cintcm.ac.cn/onto#moxingzhibeichenggongzhibiao</ontologyURI>
+					</ontoProp>	
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="模型组相关药理实验" variable="?ylsy">http://cintcm.ac.cn/onto#moxingzuxiangguanyaolishiyan</ontologyURI>
+					</relation>
+				</relations>
+				<relationPath target="?syjc">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有实验检测" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?sydx">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有实验对象" variable="?sydx"></path>
+				</relationPath>
+				<relationPath target="?wenxian">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有研究药物" variable="?yjyw"></path>
+					<path label="有文献" variable="?wenxian"></path>
+				</relationPath>
+			</ontology>
+			
+			<ontology label="实验对象" variable="?sydx">
+				<ontologyURI>http://cintcm.ac.cn/onto#shiyanduixiang</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="对象名称" variable="?sydxmc" stat="true">http://www.w3.org/2004/02/skos/core#prefLabel</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="类型" variable="?sydxlx" type="cate" stat="true">http://cintcm.ac.cn/onto#shiyanduixiangleixing</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="动物种属" variable="?dwzs" stat="true">http://cintcm.ac.cn/onto#dongwuzhongshu</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="动物品系" variable="?dwpx" stat="true">http://cintcm.ac.cn/onto#dongwupinxi</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="动物性别" variable="?dwxb" stat="true">http://cintcm.ac.cn/onto#dongwuxingbie</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="相关药理实验" variable="?ylsy">http://cintcm.ac.cn/onto#duixiangxiangguanshiyan</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="相关毒理实验" variable="?dlsy">http://cintcm.ac.cn/onto#duixiangxiangguanshiyan</ontologyURI>
+					</relation>
+				</relations>
+				<relationPath target="?mxz">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有模型组" variable="?mxz"></path>
+				</relationPath>
+				<relationPath target="?syjc">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有实验检测" variable="?syjc"></path>
+				</relationPath>
+				<relationPath target="?lcyl">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有研究药物" variable="?yjyw"></path>
+					<path label="有临床药理" variable="?lcyl"></path>
+				</relationPath>
+				<relationPath target="?wenxian">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有研究药物" variable="?yjyw"></path>
+					<path label="有文献" variable="?wenxian"></path>
+				</relationPath>
+			</ontology>
+			
+			<ontology label="实验检测" variable="?syjc">
+				<ontologyURI>http://cintcm.ac.cn/onto#shiyanjiance</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="检测分类" variable="?jcfl" stat="true">http://cintcm.ac.cn/onto#jiancefenlei</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="变化指标" variable="?bhzb" stat="true">http://cintcm.ac.cn/onto#shiyanjiancebianhuazhibiao</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="效应部位" variable="?xybw" stat="true">http://cintcm.ac.cn/onto#xiaoyingbuwei</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="相关药理实验" variable="?ylsy">http://cintcm.ac.cn/onto#jiancexiangguanshiyan</ontologyURI>
+					</relation>
+					<relation>
+						<ontologyURI label="相关毒理实验" variable="?dlsy">http://cintcm.ac.cn/onto#jiancexiangguanshiyan</ontologyURI>
+					</relation>
+				</relations>
+				<relationPath target="?wenxian">
+					<path label="有药理实验" variable="?ylsy"></path>
+					<path label="有研究药物" variable="?yjyw"></path>
+					<path label="有文献" variable="?wenxian"></path>
+				</relationPath>
+			</ontology>
+			
+			<ontology label="临床药理" variable="?lcyl">
+				<ontologyURI>http://cintcm.ac.cn/onto#linchuangyaoli</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="实验分组名称" variable="?syfzmc" stat="true" pref="true">http://cintcm.ac.cn/onto#shiyanfenzumingcheng</ontologyURI>   
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="实验内容" variable="?lcsynr" stat="true">http://cintcm.ac.cn/onto#shiyanneirong</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="实验类型" variable="?lcsylx" stat="true">http://cintcm.ac.cn/onto#shiyanleixing</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="实验方法" variable="?lcsyff" stat="true">http://cintcm.ac.cn/onto#shiyanfangfa</ontologyURI>
+					</ontoProp>
+				</ontoProps>
+				<relations>
+					<relation>
+						<ontologyURI label="相关药物" variable="?yjyw">http://cintcm.ac.cn/onto#yuanlixiangguanyaowu</ontologyURI>
+					</relation>
+				</relations>
+			</ontology>
+			
+			<ontology label="文献" variable="?wenxian">
+				<ontologyURI>http://cintcm.ac.cn/onto#wenxian</ontologyURI>
+				<ontoProps>
+					<ontoProp>
+						<ontologyURI label="题名" variable="?timing">http://cintcm.ac.cn/onto#wenxiantiming</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="刊名" variable="?kanming">http://cintcm.ac.cn/onto#wenxiankanming</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="作者" variable="?zuozhe">http://cintcm.ac.cn/onto#wenxianzuozhe</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="年" variable="?nian">http://cintcm.ac.cn/onto#wenxiannian</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="卷" variable="?juan">http://cintcm.ac.cn/onto#wenxianjuan</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="期" variable="?qi">http://cintcm.ac.cn/onto#wenxianqi</ontologyURI>
+					</ontoProp>
+					<ontoProp>
+						<ontologyURI label="研究单位" variable="?yjdw">http://cintcm.ac.cn/onto#wenxianyanjiudanwei</ontologyURI>
+					</ontoProp>			
+				</ontoProps>
+			</ontology>
+			
+		</ontologies>
+		<views>
+			<grid name="对照药物">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>对照药物</label>
+					<field type="primary">dzzzlyw</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关研究药物</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="研究药物">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>研究药物名称</label>
+					<field type="primary">ywmc</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+			</grid>
+			
+			<grid name="给药方式">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>给药方式</label>
+					<field type="primary">gyfs</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关研究药物</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="药物剂型">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>药物剂型</label>
+					<field type="primary">ywjx</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关研究药物</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="化学成分">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>化学成分</label>
+					<field type="primary">hxcf</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关单味药</label>
+					<field>link</field>
+				</column>
+				<column>
+					<label>相关方剂</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="单味药">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>单味药名称</label>
+					<field type="primary">danweiyao</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关化学成分</label>
+					<field>link</field>
+				</column>
+				<column>
+					<label>相关方剂</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="方剂">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>方剂名称</label>
+					<field type="primary">fangji</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关单味药</label>
+					<field>link</field>
+				</column>
+				<column>
+					<label>相关化学成分</label>
+					<field>link</field>
+				</column>
+			</grid>
+			
+			<grid name="药物作用">
+				<column>
+					<label>序号</label>
+					<field>id</field>
+				</column>
+				<column>
+					<label>药物作用</label>
+					<field type="primary">ylfl</field>
+				</column>
+				<column>
+					<label>关联次数</label>
+					<field>count</field>
+				</column>
+				<column>
+					<label>相关研究药物</label>
+					<field>link</field>
+				</column>
+			</grid>
+		</views>
+	</domain>
+</app>

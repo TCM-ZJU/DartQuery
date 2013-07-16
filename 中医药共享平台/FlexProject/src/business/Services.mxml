@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rds:ServiceLocator xmlns:rds="com.adobe.cairngorm.business.*" xmlns:mx="http://www.adobe.com/2006/mxml">
+	<!--
+	<mx:HTTPService id="linchuangSearchService" url="http://localhost:8080/TCMQuery/servlet/RelationQuery" resultFormat="e4x" showBusyCursor="true"/>
+	-->
+	<mx:HTTPService id="linchuangSearchService" destination="linchuang" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="relationSearchService" destination="relationSearch" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="recordSearchService" destination="recordSearch" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="indexSearchService" destination="indexSearch" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="basicSearchService" destination="basicSearch" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="generalSearchService" destination="generalSearch" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="statSearchService" destination="statSearch" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="linchuangGeneralSearchService" destination="linchuangGeneralSearch" resultFormat="e4x" showBusyCursor="true"/>
+	<mx:HTTPService id="linchuangPicSearchService" destination="linchuangPicSearch" resultFormat="e4x" showBusyCursor="true"/>
+</rds:ServiceLocator> 

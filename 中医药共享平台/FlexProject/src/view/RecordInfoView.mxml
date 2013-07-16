@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off"
+	 xmlns:Component="view.Components.*" creationComplete="init();">
+	
+	<mx:Style source="style/mystyle.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.dataGridClasses.DataGridColumn;
+			
+			import model.TsfModelLocator;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var headerText_daiweiyao:Array = ["序号", "药理分类", "给药方式", "药物剂型", "单味药包含的化学成份", "包含此单味药的方剂"];
+			
+			public function init():void {
+				for (var i:int = 0; i < headerText_daiweiyao.length; i++)
+				{
+					var column:DataGridColumn = new DataGridColumn();
+					column.headerText = headerText_daiweiyao[i];
+					if (i > 3)
+						column.minWidth = 150;
+					dataGrid.columns = dataGrid.columns.concat(column);
+					
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:VBox verticalGap="20" paddingLeft="5" paddingTop="5" paddingRight="5" width="90%">
+	<mx:HBox width="90%" horizontalAlign="left" paddingLeft="10">
+		<mx:Label paddingLeft="5" text="当前查看的是xx单味药的研究信息记录" color="#0066cc"/>
+	</mx:HBox>
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="100%" textAlign="center"
+			 resizableColumns="false" sortableColumns="false" rowCount="20" headerStyleName="mydataGridHeaderStyle">
+		</mx:DataGrid>
+		<Component:SuperNavBar id="upNavBar" width="90%" recordCount="100" />
+	</mx:VBox>
+</mx:Canvas>

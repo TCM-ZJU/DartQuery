@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="800" xmlns:flexlib="flexlib.containers.*" 
+	fontSize="12" title="查询结果" titleStyleName="titleColor" styleName="mypanel" xmlns:view="view.*" 
+	 paddingTop="5" paddingLeft="5" paddingRight="5" creationComplete="init()">
+	
+	<mx:Style source="style/mystyle.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import vo.yaoli.Yaoli;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import mx.events.ItemClickEvent;
+			import model.TsfModelLocator;
+			import vo.EntryItem;
+			import flexlib.containers.SuperTabNavigator;
+			import events.LinkButtonDynamicEvent;
+			import events.yaoli.BasicSearchEvent;	
+			import events.yaoli.GeneralSearchEvent;	
+			import events.yaoli.StatSearchEvent;
+			import events.yaoli.ShowStatEvent;
+			import events.yaoli.ShowRecordEvent;
+			import view.yaoli.BasicResultView;
+			import view.yaoli.GeneralInfoView;
+			import view.yaoli.StatInfoView;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			[Bindable]
+			public var tag1:ArrayCollection;
+			
+			public var key:String = "";
+			public var cate:String = "";
+			public var source:String = "";
+			public var target:String = "";
+			public var tabTitle:String = "";
+			
+			public function init():void
+			{
+				this.addEventListener(LinkButtonDynamicEvent.EVENT_ID, linkButtonClickHandler);
+				this.addEventListener(ShowStatEvent.EVENT_ID, showStat);
+				this.addEventListener(ShowRecordEvent.EVENT_ID, showRecord);
+//				tabNav.setClosePolicyForTab(0, SuperTab.CLOSE_NEVER);
+//				genInfo.addEventListener(ShowSourceEvent.SHOW_SOURCE, showSource);
+//				genInfo.addEventListener(ShowStatisticsEvent.SHOW_STATISTICS, showStatistics);
+//				genInfo.addEventListener(ShowRecordEvent.SHOW_RECORD, showRecord);
+			}
+			
+			public function create():void
+			{
+				var array:Array = new Array();
+			//  改成单级入口
+			//	var entryItem:EntryItem = modelLocator.yaoLi.primaryEntryList[modelLocator.primaryEntryIndex].subEntryList[modelLocator.subEntryIndex];
+				var entryItem:EntryItem = modelLocator.yaoLi.entrylist[modelLocator.entryIndex];
+				for each(var str:String in entryItem.itemArray)
+				{
+					array.push(str);
+				//	Alert.show(item.label);
+				}
+				tag1 = new ArrayCollection(array);
+			}
+			
+			public function initView():void
+			{
+				tabNav.removeAllChildren();
+			//	if (modelLocator.primaryEntryIndex < 3)
+				if (modelLocator.entryIndex < 3)
+				{		
+					key = modelLocator.currentInfo.keyword;
+					// 改成单级入口
+					var entryString:String = modelLocator.currentInfo.currentEntry;
+					var pos:int = entryString.indexOf("-");
+					
+				//	cate = modelLocator.currentInfo.subEntry;
+				//	source = modelLocator.currentInfo.primaryEntry;	
+					source = entryString.substring(0, pos);
+					cate = entryString.substring(pos+1, entryString.length);
+					modelLocator.currentView = "相关文献";
+					target = modelLocator.currentView;	
+					tabTitle = key + "-" + target;
+					basicSearch();
+				//	generalSearch();
+				}
+			//	if (modelLocator.primaryEntryIndex == 1 || modelLocator.primaryEntryIndex == 2)
+				else
+				{
+					key = modelLocator.currentInfo.keyword;
+					cate = "";
+					source = modelLocator.currentInfo.currentEntry;	
+					modelLocator.currentView = "相关文献";
+					target = modelLocator.currentView;
+					tabTitle = key + "-" + target;
+					basicSearch();
+				}
+				
+//				if (modelLocator.primaryEntryIndex == 3)
+//				{
+//					key = modelLocator.currentInfo.keyword;
+//				//	cate = modelLocator.currentInfo.primaryEntry;
+//				//	source = "研究药物";
+//					cate = "";
+//					source = modelLocator.currentInfo.primaryEntry;
+//					modelLocator.currentView = "相关文献";
+//					target = modelLocator.currentView;
+//					tabTitle = key + "-" + target;
+//				//	target = modelLocator.currentView;
+//					basicSearch();
+//				}
+//				if (modelLocator.primaryEntryIndex == 4)
+//				{
+//					key = modelLocator.currentInfo.keyword;
+//				//	cate = modelLocator.currentInfo.primaryEntry;
+//				//	source = "实验检测";
+//					cate = "";
+//					source = modelLocator.currentInfo.primaryEntry;
+//					modelLocator.currentView = "相关文献";
+//					target = modelLocator.currentView;
+//					tabTitle = key + "-" + target;
+//				//	target = modelLocator.currentView;
+//				//	tabTitle = key + "-" + modelLocator.currentView;
+//					basicSearch();
+//				}
+//				if (modelLocator.primaryEntryIndex == 5)
+//				{
+//					key = modelLocator.currentInfo.keyword;
+//				//	cate = modelLocator.currentInfo.primaryEntry;
+//				//	source = "模型组";
+//					cate = "";
+//					source = modelLocator.currentInfo.primaryEntry;
+//					modelLocator.currentView = "相关文献";
+//					target = modelLocator.currentView;
+//					tabTitle = key + "-" + target;
+//				//	target = modelLocator.currentView;
+//				//	tabTitle = key + "-" + modelLocator.currentView;
+//					basicSearch();
+//				}
+			}
+			
+			public function changeView(label:String):void
+			{
+				modelLocator.currentView = label;
+				
+				if (tabNav.getChildByName(modelLocator.currentView) == null)
+				{  
+					target = label;
+			//		tabTitle = key + "-" + target;
+					tabTitle = label + "-记录信息";
+					basicSearch();
+				}
+				else 
+				{
+					var index:int = tabNav.getChildIndex(tabNav.getChildByName(modelLocator.currentView));
+					tabNav.selectedIndex = index;
+				}
+			}
+			
+			public function addStatView(label:String):void
+			{
+				var tabName:String = label + "-统计信息";
+				
+				if (tabNav.getChildByName(tabName) == null)
+				{  
+					target = label;
+					tabTitle = tabName;
+					statSearch();
+				}
+				else 
+				{
+					var index:int = tabNav.getChildIndex(tabNav.getChildByName(tabName));
+					tabNav.selectedIndex = index;
+				}
+			}
+			
+			public function addGeneralView():void
+			{
+				var tabName:String = "汇总信息";
+				if (tabNav.getChildByName(tabName) == null)
+				{
+					tabTitle = tabName;
+					generalSearch();
+				}
+				else 
+				{
+					var index:int = tabNav.getChildIndex(tabNav.getChildByName(tabName));
+					tabNav.selectedIndex = index;
+				}
+			}
+			
+			public function statSearch():void 
+			{
+				var identity:int;
+			//	if (modelLocator.primaryEntryIndex < 1)
+				if (modelLocator.entryIndex < 3)
+					identity = 1;
+				else if (modelLocator.entryIndex == 3 || modelLocator.entryIndex == 5)
+				{
+					if (target.indexOf("单味药") != -1 || target.indexOf("化学成分") != -1 || target.indexOf("方剂") != -1)
+						identity = 1;
+					else identity = 2;
+				}
+				else identity = 2;
+				var field:String = target;
+				var statSearchEvent:StatSearchEvent = new StatSearchEvent(key, cate, source, target, field, 0, 20, identity);
+				statSearchEvent.dispatch();
+				var displayView:StatInfoView = new StatInfoView();
+				displayView.label = tabTitle;
+				tabNav.addChild(displayView);
+				tabNav.selectedChild = displayView;
+				tabNav.selectedChild.name = displayView.label;
+			}
+			
+			public function generalSearch():void
+			{
+				target = "";
+				//tabTitle = "汇总信息";
+				for (var i:int = 0; i < tag1.length - 1; i++)
+					target += tag1[i] + "-";
+				var generalSearchEvent:GeneralSearchEvent = new GeneralSearchEvent(key, cate, source, target);
+				generalSearchEvent.dispatch();
+				var displayView:GeneralInfoView = new GeneralInfoView();
+				displayView.label = tabTitle;
+				tabNav.addChild(displayView);
+				tabNav.selectedChild = displayView;
+				tabNav.selectedChild.name = "汇总信息";  	
+			}
+			
+			public function basicSearch():void
+			{
+				var identity:int;
+				//if (modelLocator.primaryEntryIndex < 1)
+				if (modelLocator.entryIndex < 3)
+					identity = 1;
+				else identity = 2;
+				
+				var basicSearchEvent:BasicSearchEvent = new BasicSearchEvent(key, cate, source, target, 0, 20, identity);
+				basicSearchEvent.dispatch();
+				var displayView:BasicResultView = new BasicResultView();
+				displayView.label = tabTitle;
+				tabNav.addChild(displayView);
+				tabNav.selectedChild = displayView;
+				tabNav.selectedChild.name = modelLocator.currentView;  	
+			}
+			
+			public function relationSearch(key:String, field:String, source:String):void
+			{
+				var viewName:String = key + field + source;
+				
+				if (tabNav.getChildByName(viewName) == null)
+				{  
+					target = source;
+					tabTitle = key + "-" + source;
+					if (source.indexOf("单味药") != -1 || source.indexOf("方剂") != -1 || source.indexOf("化学成分") != -1)
+					{
+						var statSearchEvent:StatSearchEvent = new StatSearchEvent(key, field, field, source, source, 0, 20, 1);
+						statSearchEvent.dispatch();
+					}
+					else {
+					//var statSearchEvent:statSearchEvent = new statSearchEvent(key, field, source, target, 0, 20, 2);			
+						var statSearchEvent:StatSearchEvent = new StatSearchEvent(key, field, field, source, source, 0, 20, 2);
+						statSearchEvent.dispatch();
+					}
+					var displayView:StatInfoView = new StatInfoView();
+					displayView.label = tabTitle;
+					tabNav.addChild(displayView);
+					tabNav.selectedChild = displayView;
+					tabNav.selectedChild.name = viewName;
+				}
+				else 
+				{
+					var index:int = tabNav.getChildIndex(tabNav.getChildByName(viewName));
+					tabNav.selectedIndex = index;
+				}
+			}
+			
+			public function linkButtonClickHandler(event:LinkButtonDynamicEvent):void
+			{
+			//	Alert.show(event.key + " " + event.label);
+				if (event.label == "记录信息")
+				{
+					changeView(event.key);
+				}
+				else if (event.label == "详细信息") 
+				{
+					addStatView(event.key);
+				}
+				else if (event.label == "原文信息")
+				{
+					
+				}
+				else 
+				{
+				//	Alert.show(event.key + " " + event.source + " " + event.label);
+					relationSearch(event.key, event.source, event.label);	
+				}
+			}
+
+			public function showStat(event:ShowStatEvent):void
+			{
+				addStatView(event.content);
+			}
+			
+			public function showRecord(event:ShowRecordEvent):void
+			{
+				changeView(event.content);
+			}
+			
+			public function closeAll():void
+			{
+				tabNav.removeAllChildren();
+			}
+		]]>
+	</mx:Script>
+	<mx:ViewStack id="introAndResultView" width="100%" height="100%" selectedIndex="1">
+		<view:YaoliIntroView width="100%" height="100%" />
+		<mx:VBox id="vbox" width="100%" height="100%" verticalGap="10"
+			 paddingLeft="5" paddingTop="5" paddingRight="5" paddingBottom="5">
+			<!--
+			<mx:HBox width="98%">
+				
+				<mx:LinkBar id="linkbar1" width="90%" height="30" color="haloBlue" fontSize="14" dataProvider="{tag1}" 
+				itemClick="changeView(event.label)" />
+				
+				<mx:HBox width="100%">
+					<mx:Spacer width="80%" />
+					<mx:Label text="进入汇总信息" fontWeight="bold" fontSize="14" color="green" 
+						textDecoration="underline" buttonMode="true" click="addGeneralView()" />
+				</mx:HBox>
+				<mx:Spacer width="100%" />
+				<mx:Label text="关闭所有" color="red" fontSize="12" fontWeight="bold" mouseChildren="true"
+					 buttonMode="true" click="closeAll()" enabled="false" visible="false"/>	
+			</mx:HBox>
+			-->
+			
+			<flexlib:SuperTabNavigator id="tabNav" width="100%" height="100%">
+				
+			</flexlib:SuperTabNavigator>	
+		</mx:VBox>
+	</mx:ViewStack>
+	
+	
+</mx:Panel>
+
+

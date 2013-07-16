@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off" 
+	xmlns:Component="view.Components.*">
+	 
+	<mx:Style source="style/mystyle.css"/>
+	<mx:Script>
+		<![CDATA[
+			import model.TsfModelLocator;
+			import mx.controls.Alert;
+			import events.yaoli.BasicSearchEvent;
+			import events.yaoli.ShowStatEvent;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var key:String = "";
+			public var cate:String = "";
+			public var source:String = "";
+			public var target:String = "";
+			public var identity:int; 
+			
+			public function init(result:XML):void
+			{
+				if (dataGrid.columnCount == 0)
+				{
+					key = result..key;
+					cate = result..cate;
+					source = result..source;
+					target = result..target;
+					identity = int(result..identity);
+					for each(var columnXML:XML in result..column)
+					{
+						var column:DataGridColumn = new DataGridColumn();
+						column.headerText = columnXML.@headerText;
+						column.dataField = columnXML.@dataField;
+						if (column.dataField == "id")
+							column.width = 50;
+						if (column.dataField == "nian" || column.dataField == "juan" || column.dataField == "qi")
+							column.width = 60;
+						dataGrid.columns = dataGrid.columns.concat(column);		
+					}
+					
+				}
+				dataGrid.dataProvider = result..record;
+				var xml:XMLList = result..record;
+				if (50*xml.length() + 150 < 800)
+					modelLocator.resultPanelHeight = 800;
+				else
+					modelLocator.resultPanelHeight = 50*xml.length() + 150;
+			//	Alert.show(result..totalHits);
+				navBar.recordCount = result..totalHits;
+				navBar.recordNumPerPage = result..pageSize;
+				count.htmlText = cate + " <b>" + key + "</b> " + target + "共有" + result..totalHits + "篇 每页" + navBar.recordNumPerPage + "条 共" + navBar.pageCount + "页" ;
+				statInfo.text = "统计该" + result..totalHits + "篇文献中的相关药物、研究对象、实验对象等频次信息";
+				//if (target != "相关文献")
+			//	{
+				//	statInfo.enabled = true;
+				//	statInfo.visible = true;
+				//}
+			}
+			
+			public function pageChangeHandler():void 
+			{		
+				var basicSearchEvent:BasicSearchEvent = new BasicSearchEvent(key,cate,source,target,navBar.currentPageIndex-1,20, identity);
+				basicSearchEvent.dispatch();
+
+			}
+			
+			public function showStat():void 
+			{
+				var event:ShowStatEvent = new ShowStatEvent(target);
+				dispatchEvent(event);
+			}
+			
+			public function showGeneral():void
+			{
+				modelLocator.resultView.addGeneralView();
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5" paddingRight="5">
+		<mx:HBox width="95%">
+			<mx:Text id="count" fontSize="13" color="red" />
+			<mx:Spacer width="100%"/>	
+			<mx:Label id="statInfo"  fontSize="13" fontWeight="bold" color="green" textDecoration="underline"
+				 mouseChildren="false" buttonMode="true" click="showGeneral()" paddingRight="5" />
+		</mx:HBox>
+		
+		
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="98%" height="100%" textAlign="center" fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true" headerStyleName="mydataGridHeaderStyle">
+		</mx:DataGrid>
+		<Component:SuperNavBar id="navBar" width="100%" change="pageChangeHandler();"/>
+	</mx:VBox>
+</mx:Canvas>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="700" paddingLeft="5" paddingTop="5" paddingRight="5"
+	styleName="mypanel" fontSize="12" title="检索入口" titleStyleName="titleColor">
+	
+	<mx:Style source="style/mystyle.css"/>
+
+	<mx:Metadata>
+    	[Event(name="search",type="events.Search")]
+	</mx:Metadata>
+
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ItemClickEvent;
+			import events.Search;
+			import events.LinChuangSearchEvent;
+			import model.TsfModelLocator;
+			import mx.controls.Alert;
+			
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public function search(type:int):void
+			{
+					var key:String = trimKeyword(keywordInput.text);
+					modelLocator.entryIndex = combo1.selectedIndex;
+					modelLocator.currentInfo.keyword = key;
+					modelLocator.currentInfo.currentEntry = combo1.selectedLabel;
+					modelLocator.searchType = type;
+					modelLocator.currentView = modelLocator.linChuang.entrylist[modelLocator.entryIndex].itemArray[0];
+					this.dispatchEvent(new Search(Search.TYPE));
+				//	var linChuangSearchevent:LinChuangSearchEvent = new LinChuangSearchEvent();
+				//	linChuangSearchevent.dispatch();
+				
+			}
+			
+			private function enterKeyDownHandler(event:KeyboardEvent):void
+			{
+				if (event.keyCode == 13)
+				{
+					validator1.validate();
+				}
+			}
+			
+			private function trimKeyword(key:String):String
+			{
+				var startPos:int;
+				var endPos:int;
+				for (var i:int = 0; i < key.length; i++)
+				{
+					if (key.charAt(i) != ' ')
+					{
+						startPos = i;
+						break;
+					}
+				}
+				for (var j:int = key.length - 1; j >= 0; j--)
+				{
+					if (key.charAt(j) != ' ')
+					{
+						endPos = j;
+						break;
+					}
+				}
+				return key.substring(startPos, endPos + 1);
+			}
+		]]>
+	</mx:Script>
+	<mx:StringValidator id="validator1" source="{keywordInput}" property="text" requiredFieldError=""
+    	tooShortError="" minLength="1"
+    	trigger="{button1}" triggerEvent="click" 
+    	valid="search(1)"/>
+    <mx:StringValidator id="validator2" source="{keywordInput}" property="text" requiredFieldError=""
+    	tooShortError="" minLength="1"
+    	trigger="{button2}" triggerEvent="click" 
+    	valid="search(2)"/>
+	
+	<mx:VBox verticalGap="5">
+		<mx:Form verticalGap="10" height="162" width="241" horizontalScrollPolicy="off">
+			<mx:FormItem id="entry1" label="检索项: ">
+				<mx:ComboBox id="combo1" width="136" height="25" fontSize="12" rowCount="7" labelField="label"
+					 selectedIndex="{modelLocator.entryIndex}" dataProvider="{modelLocator.linChuang.entrylist}">
+				</mx:ComboBox>
+			</mx:FormItem>
+			<mx:FormItem label="检索词: ">
+				<mx:TextInput id="keywordInput" width="132" text="{modelLocator.currentInfo.keyword}" keyDown="enterKeyDownHandler(event)"/>
+			</mx:FormItem>
+			
+				<mx:HBox horizontalGap="15" width="95%" horizontalAlign="center">
+					<mx:Button id="button1" label="精确查询" fontSize="12" buttonMode="true"
+						styleName="myButton" labelPlacement="left" />
+					<mx:Button id="button2" label="模糊查询" fontSize="12" buttonMode="true"
+						styleName="myButton" labelPlacement="left" />
+				</mx:HBox>
+
+		</mx:Form>
+		<mx:Label text="索引" styleName="titleColor"/>
+		<mx:Tree id="tree" height="467" width="241" labelField="@label" fontSize="12"
+                showRoot="false">
+    	</mx:Tree>
+	</mx:VBox>
+	
+</mx:Panel>

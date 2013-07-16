@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:renderers="renderers.*" xmlns:vo="vo.*"
+	 creationComplete="init();">
+	 
+	 <mx:Style source="style/mystyle.css"/>
+	 
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+		
+			import model.TsfModelLocator;
+			import vo.GeneralInfoVO;
+			import vo.GeneralItem;
+			
+			import events.*;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			[Bindable]
+			public var generalInfo:GeneralInfoVO;
+			
+			[Bindable]
+				public var mydata:Array;
+			
+			public function init():void
+			{
+				var item:Object = new Object();
+				item.basic = "该单味药的研究信息共有xx条";
+				var item2:Object = new Object();
+				item2.basic = "该单味药的对照药物共有xx条";
+				var item3:Object = new Object();
+				item3.basic = "该单味药相关的药理实验共有xx条";
+				var item4:Object = new Object();
+				item4.basic = "该单味药相关的毒理实验共有xx条";
+				var item5:Object = new Object();
+				item5.basic = "...";
+				mydata = new Array();
+				mydata.push(item);
+				mydata.push(item2);
+				mydata.push(item3);
+				mydata.push(item4);
+				mydata.push(item5);
+				
+			}
+			
+			public function showSourceHandler():void 
+			{
+				var event:ShowSourceEvent = new ShowSourceEvent(ShowSourceEvent.SHOW_SOURCE, dataGrid.selectedIndex);
+				dispatchEvent(event);
+			}
+			
+			public function showStatisticsHandler():void 
+			{
+				var event:ShowStatisticsEvent = new ShowStatisticsEvent(ShowStatisticsEvent.SHOW_STATISTICS, dataGrid.selectedIndex);
+				dispatchEvent(event);
+			}
+			
+			public function showRecordHandler():void 
+			{
+				var event:ShowRecordEvent = new ShowRecordEvent(ShowRecordEvent.SHOW_RECORD, dataGrid.selectedIndex);
+				dispatchEvent(event);
+			}
+			
+			
+		]]>
+	</mx:Script>
+	<mx:DataGrid id="dataGrid" x="10" y="10" width="90%" textAlign="center"  rowCount="20"
+		 resizableColumns="false" sortableColumns="false" dataProvider="{mydata}" headerStyleName="mydataGridHeaderStyle">
+		<mx:columns>
+			<mx:DataGridColumn minWidth="250" fontSize="12" headerText="基本信息" dataField="basic"/>
+			<mx:DataGridColumn fontSize="12" width="70" headerText="原文信息" dataField="source">
+				<mx:itemRenderer>
+	     			<mx:Component> 
+	      				<mx:LinkButton textDecoration="underline" label="查看" fontWeight="normal" click="outerDocument.showSourceHandler();"/>    
+	     			</mx:Component>
+	    		</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn fontSize="12" width="70" headerText="统计信息" dataField="statistic">
+				<mx:itemRenderer>
+	     			<mx:Component> 
+	      				<mx:LinkButton textDecoration="underline" label="查看" fontWeight="normal" click="outerDocument.showStatisticsHandler();"/>    
+	     			</mx:Component>
+	    		</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn fontSize="12" width="70" headerText="记录信息" dataField="record">
+				<mx:itemRenderer>
+	     			<mx:Component> 
+	      				<mx:LinkButton textDecoration="underline" label="查看" fontWeight="normal" click="outerDocument.showRecordHandler();"/>    
+	     			</mx:Component>
+	    		</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:Model id="datagrid">
+	        <root>
+	        	<data>
+	        		<basic>该单味药的研究信息共有xx条</basic>
+	            </data>
+	            <data>
+	            	<basic>该单味药的对照药物共有xx条</basic>
+	            </data>
+	            <data>
+	            	<basic>该单味药相关的药理实验共有xx条</basic>       	
+	            </data>
+	        </root>
+	 </mx:Model>
+	
+	<!--
+	<mx:VBox width="100%" height="100%" verticalGap="10">
+		<mx:Repeater id="rp" dataProvider="{generalInfo.items}">
+			<renderers:GeneralItemRenderer width="90%" item="{rp.currentItem as GeneralItem}"/>
+		</mx:Repeater>
+	</mx:VBox>
+	-->
+	<!--
+	<mx:HBox id="title" width="100%" height="48" backgroundColor="#C9D7F1" verticalAlign="middle">
+		<mx:Text text="{modelLocator.generalResult.text}" width="50%">
+		</mx:Text>
+		<mx:Button label="原文信息" />
+		<mx:Button label="统计分析" />
+	</mx:HBox>
+	-->
+</mx:Canvas>

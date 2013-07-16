@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:view="view.*"
+	xmlns:business="business.*" xmlns:control="control.*" width="100%" creationComplete="init();" viewSourceURL="srcview/index.html">
+	
+	<mx:Model id="configModel" source="../conf/app-config.xml"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection; 
+			import mx.controls.Alert;
+			import model.TsfModelLocator;
+			import flash.events.Event;
+			import flash.net.URLLoader;
+			import flash.net.URLRequest;
+			import mx.controls.Alert;
+			import vo.*;
+			import events.EntrySearchEvent; 
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public function init():void
+			{
+				
+				var loader:URLLoader = new URLLoader();
+  				var requestt:URLRequest = new URLRequest("app-config.xml");
+  				loader.load(requestt);
+  				loader.addEventListener(Event.COMPLETE, onComplete);
+  				modelLocator.resultView = resultView;
+			}
+			
+			public function onComplete(event:Event):void
+			{
+				var loader_temp:URLLoader = event.target as URLLoader;
+				var appxml:XML = new XML(loader_temp.data);
+				for each (var domain:XML in appxml..domain)
+				{
+					if (domain.@name=="临床")
+					readLinChuangData(domain);
+				}
+			}
+			
+			public function readLinChuangData(xml:XML):void
+			{
+				var arrayEntry:Array = new Array();
+				for each (var entry:XML in xml..entry)
+				{
+					//Alert.show(entry.label);
+					var entryItem:EntryItem = new EntryItem();
+					entryItem.label = entry.label;
+					for each (var col:XML in entry..item)
+					{
+						entryItem.itemArray.push(col.label);
+						var key:String = col.label;
+						var value:String = col.value;
+						entryItem.map[key] = value;
+					}
+					arrayEntry.push(entryItem);
+				}
+				modelLocator.linChuang.entrylist = new ArrayCollection(arrayEntry);
+			//	Alert.show(String(modelLocator.linChuang.entrylist is EntryItem));
+			//	var temp:EntryItem = modelLocator.linChuang.entrylist[0];
+			//	Alert.show(temp.itemArray[1]);
+			//	Alert.show(temp.map[temp.itemArray[1]]);
+			}
+			
+			public function doChange():void
+			{
+			//	var entryItem:EntryItem = modelLocator.linChuang.entrylist[modelLocator.entryIndex];
+				homePage.visible = false;
+				resultView.visible = true;
+			    resultView.init();
+			    resultView.initView();		
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<business:Services/>
+	<control:TsfController/>
+	
+	<view:LinchuangSearchEntry id="searchEntry" width="20%" x="10" y="10" height="780" search="doChange()">
+	</view:LinchuangSearchEntry>
+	<view:CurrentSearchInfo width="70%" x="299" y="10">
+	</view:CurrentSearchInfo>
+	
+	
+	<view:LinchuangResultView id="resultView" visible="false" x="299" y="92" width="70%" height="700">	
+	</view:LinchuangResultView>
+	
+	<view:HomePage id="homePage" x="299" y="92"  width="70%" height="700">	
+	</view:HomePage>
+	
+</mx:Application>

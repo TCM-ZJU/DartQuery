@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="74" titleStyleName="titleColor" 
+	styleName="mypanel" fontSize="12" title="当前查询">
+
+	<mx:Style source="style/mystyle.css"/> 
+     
+	<mx:Script>
+		<![CDATA[
+			import model.TsfModelLocator;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+		]]>
+	</mx:Script>
+	<mx:HBox horizontalGap="10" paddingTop="3" fontSize="14">
+		<mx:HBox>
+			<mx:Label text="当前库:"/>
+			<mx:Label text="{modelLocator.currentInfo.database}" color="red" fontWeight="bold"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="当前入口:"/>
+			<mx:Label text="{modelLocator.currentInfo.currentEntry}" color="red" fontWeight="bold"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="关键词:"/>
+			<mx:Label text="{modelLocator.currentInfo.keyword}" color="red" fontWeight="bold"/>
+		</mx:HBox>
+	</mx:HBox>
+	
+	
+</mx:Panel>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off"
+	xmlns:Component="view.Components.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			
+			import model.TsfModelLocator;
+			import events.RecordSearchEvent;
+			import events.LinkButtonDynamicEvent;
+			import mx.controls.Alert;
+			import mx.collections.Sort;
+			import mx.collections.SortField;
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var key:String;
+			public var source:String;
+			public var target:String;
+			
+			public function init(result:XML):void
+			{
+				key = result..key;
+				source = result..source;
+				target = result..target;	
+				navBar.recordCount = result..totalHits;
+				navBar.recordNumPerPage = result..pageSize;
+				count.htmlText = "<b>" + key + "</b> 相关" + target + "共有" + result..totalHits + "篇 每页" + navBar.recordNumPerPage + "条 共" + navBar.pageCount + "页" ;
+				statLink.text = "统计该" + result..totalHits + "篇文献中的相关症证治疗等频次信息";
+				var xml:XMLList = result..record;
+				if (50*xml.length() + 150 < 800)
+					modelLocator.resultPanelHeight = 800;
+				else
+					modelLocator.resultPanelHeight = 50*xml.length() + 150;
+				sortWenxian(result..record);
+			}
+			
+			private function sortWenxian(data:XMLList):void
+			{
+				var xmlList:XMLListCollection = new XMLListCollection(data);
+			//	Alert.show("first"+xmlList.length.toString());
+				var sort:Sort = new Sort();
+				var sortFieldNian:SortField = new SortField("nian", true, true, true);
+				var sortFieldJuan:SortField = new SortField("juan", true, false, true);
+				var sortFieldQi:SortField = new SortField("qi", true, false, true);
+				sort.fields = [sortFieldNian, sortFieldJuan, sortFieldQi];
+				xmlList.sort = sort;
+				xmlList.refresh();
+			//	Alert.show(xmlList.length.toString());
+				dataGrid.dataProvider = xmlList;
+			}
+			
+			public function pageChangeHandler():void 
+			{
+				var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key, source, target, navBar.currentPageIndex-1, 20);
+				recordSearchEvent.dispatch();
+			}
+			
+			public function changeToStat():void
+			{
+				modelLocator.resultView.changeView("统计信息");
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5">
+		<mx:HBox width="100%">
+			<mx:Text id="count" fontSize="13" color="red" />
+			<mx:Spacer width="100%" />
+			<mx:Label id="statLink" paddingRight="10" textDecoration="underline" fontSize="13"
+				 color="green" buttonMode="true" mouseChildren="false" click="changeToStat()" />
+		</mx:HBox>
+		
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="95%" height="100%" textAlign="center" fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true" headerStyleName="mydataGridHeaderStyle">
+			 <mx:columns>
+			 	<mx:DataGridColumn headerText="序号" dataField="id" width="30" />
+			 	<mx:DataGridColumn headerText="文献题名" dataField="timing" width="180" />
+			 	<mx:DataGridColumn headerText="作者" dataField="zuozhe" width="100" />
+			 	<mx:DataGridColumn headerText="年" dataField="nian" width="50" />
+			 	<mx:DataGridColumn headerText="卷" dataField="juan" width="50" />
+			 	<mx:DataGridColumn headerText="期" dataField="qi" width="50" />
+			 	<mx:DataGridColumn headerText="刊" dataField="kanming" width="100" />
+			 	<mx:DataGridColumn headerText="原文" width="50">
+			 		<mx:itemRenderer>
+			 			<mx:Component>
+			 				<mx:LinkButton label="查看" color="green" textDecoration="underline"
+			 				 click="showPic(data.timing);" >
+			 				 	<mx:Script>
+			 				 		<![CDATA[	
+			 				 			import events.LinkButtonDynamicEvent;
+			 				 			private function showPic(value:String):void
+											{
+												var linkButtonEvent:LinkButtonDynamicEvent = 
+												new LinkButtonDynamicEvent(LinkButtonDynamicEvent.EVENT_ID, value, "临床文献", "原文");
+												dispatchEvent(linkButtonEvent);
+											}
+			 				 		]]>
+			 				 	</mx:Script>
+			 				 </mx:LinkButton>
+			 			</mx:Component>
+			 		</mx:itemRenderer>
+			 	</mx:DataGridColumn>
+			 </mx:columns>
+		</mx:DataGrid>
+		<Component:SuperNavBar id="navBar" width="100%" change="pageChangeHandler();"/>
+	</mx:VBox>
+</mx:Canvas>

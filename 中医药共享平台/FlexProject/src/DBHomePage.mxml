@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="#ffffff" fontSize="13" width="100%" height="100%" layout="absolute" 
+	xmlns:Component="view.Components.*" creationComplete="init();">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection; 
+			import mx.controls.Alert;
+			import model.TsfModelLocator;
+			import flash.events.Event;
+			import flash.net.URLLoader;
+			import flash.net.URLRequest;
+			import mx.controls.Alert;
+			import vo.*;
+			import events.EntrySearchEvent; 
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			private var _searchType:int = 0;
+			[Bindable]
+			public function get searchType():int
+			{
+				return _searchType;
+			}
+			public function set searchType(value:int):void
+			{
+				_searchType = value;
+				jumpBtn1.selected = (_searchType == 0);
+				jumpBtn2.selected = (_searchType == 1);
+				jumpBtn3.selected = (_searchType == 2);
+				jumpBtn4.selected = (_searchType == 3);
+				jumpBtn5.selected = (_searchType == 4);
+		
+			}
+			
+			public function init():void
+			{
+				
+				var loader:URLLoader = new URLLoader();
+  				var requestt:URLRequest = new URLRequest("app-config.xml");
+  				loader.load(requestt);
+  				loader.addEventListener(Event.COMPLETE, onComplete);
+  				
+			}
+			
+			public function onComplete(event:Event):void
+			{
+				var loader_temp:URLLoader = event.target as URLLoader;
+				var appxml:XML = new XML(loader_temp.data);
+				for each (var domain:XML in appxml..domain)
+				{
+					if (domain.@name=="临床")
+					readLinChuangData(domain);
+				}
+			}
+			
+			public function readLinChuangData(xml:XML):void
+			{
+				var arrayEntry:Array = new Array();
+				for each (var entry:XML in xml..entry)
+				{
+					//Alert.show(entry.label);
+					var entryItem:EntryItem = new EntryItem();
+					entryItem.label = entry.label;
+					for each (var col:XML in entry..item)
+					{
+						entryItem.itemArray.push(col.label);
+						var key:String = col.label;
+						var value:String = col.value;
+						entryItem.map[key] = value;
+					}
+					arrayEntry.push(entryItem);
+				}
+				modelLocator.linChuang.entrylist = new ArrayCollection(arrayEntry);
+				combo.dataProvider = modelLocator.linChuang.entrylist;
+			//	Alert.show(String(modelLocator.linChuang.entrylist is EntryItem));
+			//	var temp:EntryItem = modelLocator.linChuang.entrylist[0];
+			//	Alert.show(temp.itemArray[1]);
+			//	Alert.show(temp.map[temp.itemArray[1]]);
+			}
+		]]>
+	</mx:Script>
+    
+	<mx:Image width="320" height="89" source="@Embed('assets/logo.png')" horizontalCenter="-50" verticalCenter="-208"/>
+	
+	<mx:HBox horizontalCenter="4" verticalCenter="-120">
+		<mx:TextInput id="keywordTextInput" width="250"/>
+		<mx:ComboBox id="combo" width="120" height="25" fontSize="12" rowCount="6" labelField="label"/>
+
+		<mx:Button id="searchButton" width="60" label="搜索" styleName="blueButton" buttonMode="true"/>
+	</mx:HBox>
+	
+	
+	<mx:Canvas id="imgCanvas" height="88" horizontalCenter="-48" verticalCenter="-40">
+		<Component:JumpButton id="jumpBtn1" x="20" y="0" source="@Embed('assets/icon1.png')" text="临床" change="searchType = 0" selected="true"/>
+		<Component:JumpButton id="jumpBtn2" x="120" y="0" source="@Embed('assets/icon2.png')" text="药理" change="searchType = 1"/>
+		<Component:JumpButton id="jumpBtn3" x="220" y="0" source="@Embed('assets/icon3.png')" text="个案" change="searchType = 2"/>
+		<Component:JumpButton id="jumpBtn4" x="320" y="0" source="@Embed('assets/icon4.png')" text="化学" change="searchType = 3"/>
+		<Component:JumpButton id="jumpBtn5" x="420" y="0" source="@Embed('assets/icon5.png')" text="针灸" change="searchType = 4" borderColor="#F5F8FA"/>
+		
+	</mx:Canvas>
+	<mx:HBox horizontalCenter="0" bottom="10">
+		<mx:Text text="{modelLocator.copyright}" fontFamily="Times New Roman"/>
+		<mx:Text htmlText="{modelLocator.icp}"/>
+		<mx:Image source="@Embed('assets/biaoshi.png')"/>
+	</mx:HBox>
+</mx:Application>

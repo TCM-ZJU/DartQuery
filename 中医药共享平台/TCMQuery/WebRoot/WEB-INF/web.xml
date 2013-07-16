@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
+	<context-param>
+		<param-name>config-file</param-name> 
+		<param-value>..\\webapps\\TCMQuery\\conf\\relations-config.xml</param-value> 
+	</context-param>
+	<context-param>
+		<param-name>picCache</param-name> 
+		<param-value>..\\webapps\\PicCache\\</param-value> 
+	</context-param>
+	<context-param>
+		<param-name>picAddr</param-name> 
+		<param-value>http://10.214.33.123:8080/PicCache/</param-value> 
+	</context-param>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>RelationQuery</servlet-name>
+    <servlet-class>servlet.RelationQuery</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>QueryService</servlet-name>
+    <servlet-class>servlet.QueryService</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>RecordInfoService</servlet-name>
+    <servlet-class>servlet.RecordInfoService</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>SearchService</servlet-name>
+    <servlet-class>servlet.SearchService</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>BasicSearchService</servlet-name>
+    <servlet-class>servlet.yaoli.BasicSearchService</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>GeneralInfoService</servlet-name>
+    <servlet-class>servlet.yaoli.GeneralInfoService</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>StatSearchService</servlet-name>
+    <servlet-class>servlet.yaoli.StatSearchService</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>LinChuangGeneralInfoService</servlet-name>
+    <servlet-class>servlet.LinChuangGeneralInfoService</servlet-class>
+  </servlet>
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>PicQueryService</servlet-name>
+    <servlet-class>servlet.PicQueryService</servlet-class>
+  </servlet>
+
+
+
+
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>RelationQuery</servlet-name>
+    <url-pattern>/servlet/RelationQuery</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>QueryService</servlet-name>
+    <url-pattern>/servlet/QueryService</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RecordInfoService</servlet-name>
+    <url-pattern>/servlet/RecordInfoService</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchService</servlet-name>
+    <url-pattern>/servlet/SearchService</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>BasicSearchService</servlet-name>
+    <url-pattern>/servlet/BasicSearchService</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GeneralInfoService</servlet-name>
+    <url-pattern>/servlet/GeneralInfoService</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>StatSearchService</servlet-name>
+    <url-pattern>/servlet/StatSearchService</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LinChuangGeneralInfoService</servlet-name>
+    <url-pattern>/servlet/LinChuangGeneralInfoService</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PicQueryService</servlet-name>
+    <url-pattern>/servlet/PicQueryService</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

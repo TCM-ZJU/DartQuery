@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="66" height="88" rollOver="rollOverHandler()" 
+	rollOut="rollOutHandler()" click="clickHandler();" buttonMode="true" backgroundColor="#000000" 
+	backgroundAlpha="0" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	<mx:Metadata>
+		[Event(name="change", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+	    	import mx.effects.easing.Back;
+	    	
+			[Bindable]
+			public var source:Class;
+			[Bindable]
+			public var text:String;
+			protected var _selected:Boolean = false;
+			[Bindable]
+			public function get selected():Boolean
+			{
+				return _selected;
+			}
+			public function set selected(value:Boolean):void
+			{
+				if (_selected != value)
+				{
+					_selected = value;
+					if (_selected)
+					{
+						currentState = "selectedState";
+					}
+					else
+					{
+						currentState = "";
+					}
+				}
+			}
+			
+			private function rollOverHandler():void
+			{
+				if (rollOutEffect.isPlaying)
+				{
+					rollOutEffect.stop();
+				}
+				if (!_selected)
+				{
+					currentState = "selectedState";
+				}
+			}
+			
+			private function rollOutHandler():void
+			{
+				if (rollOverEffect.isPlaying)
+				{
+					rollOverEffect.stop();
+				}
+				if (!_selected)
+				{
+					currentState = "";
+				}
+			}
+			
+			private function clickHandler():void
+			{
+				dispatchEvent(new Event("change"));
+			}
+		]]>
+	</mx:Script>
+	<mx:Image id="img" x="15" y="26" width="36" height="36" source="{source}"/>
+	<mx:Label text="{text}" horizontalCenter="0" y="68" buttonMode="true"/>
+	<mx:states>
+		<mx:State name="selectedState">
+			<mx:SetProperty target="{img}" name="x" value="6"/>
+			<mx:SetProperty target="{img}" name="y" value="2"/>
+			<mx:SetProperty target="{img}" name="width" value="54"/>
+			<mx:SetProperty target="{img}" name="height" value="54"/>
+		</mx:State>
+	</mx:states>
+	<mx:transitions>
+		<mx:Transition fromState="" toState="selectedState">
+			<mx:Parallel id="rollOverEffect" target="{img}">
+				<mx:Move xFrom="15" xTo="6" yFrom="26" yTo="2" easingFunction="{Back.easeOut}" duration="500"/>
+				<mx:Resize widthFrom="36" widthTo="54" heightFrom="36" heightTo="54" easingFunction="{Back.easeOut}" duration="500"/>
+			</mx:Parallel>
+		</mx:Transition>
+		<mx:Transition fromState="selectedState" toState="">
+			<mx:Parallel id="rollOutEffect" target="{img}">
+				<mx:Move xFrom="6" xTo="15" yFrom="2" yTo="26" easingFunction="{Back.easeOut}" duration="500"/>
+				<mx:Resize widthFrom="54" widthTo="36" heightFrom="54" heightTo="36" easingFunction="{Back.easeOut}" duration="500"/>
+			</mx:Parallel>
+		</mx:Transition>
+	</mx:transitions>
+</mx:Canvas>

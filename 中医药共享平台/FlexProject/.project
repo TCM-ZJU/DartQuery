@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>FlexProject</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>bin-debug</name>
+			<type>2</type>
+			<location>C:/apache-tomcat-6.0.14/webapps/FlexProject</location>
+		</link>
+		<link>
+			<name>service-config</name>
+			<type>2</type>
+			<location>C:/apache-tomcat-6.0.14/webapps/FlexProject/WEB-INF/flex</location>
+		</link>
+		<link>
+			<name>bin-release</name>
+			<type>2</type>
+			<location>C:/apache-tomcat-6.0.14/webapps/FlexProject</location>
+		</link>
+	</linkedResources>
+</projectDescription>

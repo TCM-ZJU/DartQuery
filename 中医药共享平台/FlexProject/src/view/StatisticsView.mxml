@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:Component="view.Components.*">
+	<mx:Style source="style/mystyle.css"/>
+	<mx:Script>
+		<![CDATA[
+			
+			public var tag1:Array = ["研究信息", "对照组信息", "相关药理实验", "相关毒理实验", "相关临床药理"];
+			public var tag1_1:Array = ["按药理分类统计", "按给药方式统计", "按药物剂型统计"];
+			
+		/*	
+			public function change():void 
+			{
+				if (linkbar1.selectedIndex = 0)
+				{
+					linkbar2.dataProvider = tag1_1;
+					linkbar2.selectedIndex = 0;
+				}
+			}
+			*/
+		]]>
+	</mx:Script>
+	
+     
+     <mx:VBox width="100%" verticalGap="10" paddingLeft="5" paddingTop="5" paddingRight="5">
+     	
+		<mx:ToggleButtonBar id="linkbar1" width="90%" height="30" dataProvider="{tag1}" color="haloBlue" 
+			 selectedButtonTextStyleName="SelectedButtonTextStyleName">
+		</mx:ToggleButtonBar>
+	
+		<mx:ToggleButtonBar id="linkbar2" width="90%" height="30" dataProvider="{tag1_1}" color="haloBlue" 
+			 selectedButtonTextStyleName="SelectedButtonTextStyleName">
+		</mx:ToggleButtonBar>
+		<mx:HBox width="90%" horizontalAlign="right">
+			<mx:LinkButton paddingRight="5" width="80" textDecoration="underline" label="原文信息" color="#0066cc"/>
+		</mx:HBox>
+		<mx:DataGrid width="90%" height="400" textAlign="center" resizableColumns="false" sortableColumns="false"
+			headerStyleName="mydataGridHeaderStyle">
+					<mx:columns>
+						<mx:DataGridColumn headerText="序号" dataField="id" width="50"/>
+						<mx:DataGridColumn headerText="药理分类" dataField="name" />
+						<mx:DataGridColumn headerText="出现次数" dataField="count" width="200"/>
+						<mx:DataGridColumn headerText="相同药理分类药物" dataField="yw" width="200"/>
+						<mx:DataGridColumn headerText="相同药理分类的相关药理实验" dataField="sy" width="200"/>
+					</mx:columns>
+		</mx:DataGrid>
+		
+		<Component:SuperNavBar id="upNavBar" width="90%" recordCount="100" />
+	</mx:VBox>
+</mx:Canvas>

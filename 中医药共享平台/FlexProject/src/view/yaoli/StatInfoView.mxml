@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off"
+	xmlns:Component="view.Components.*">
+	<mx:Style source="style/mystyle.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+		
+			import model.TsfModelLocator;
+			import events.yaoli.StatSearchEvent;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import renderers.LinkRenderer;
+			import mx.controls.Alert;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			public var key:String;
+			public var cate:String;
+			public var source:String;
+			public var target:String;
+			public var field:String;
+			public var identity:int;
+			
+			public function init(result:XML):void
+			{
+				if (dataGrid.columnCount == 0)
+				{
+					key = result..key;
+					cate = result..cate;
+					source = result..source;
+					target = result..target;
+					field = result..field;
+					identity = int(result..identity);
+					
+					for each(var columnXML:XML in result..column)
+					{
+						var column:DataGridColumn = new DataGridColumn();
+						column.headerText = columnXML.@headerText;
+						column.dataField = columnXML.@dataField;
+						if (column.dataField == "id")
+							column.width = 70;
+						else if (column.dataField == "count")
+							column.width = 70;
+						else if (column.dataField == "link")
+						{
+							column.width = 100;
+							var itemLinkRenderer:ClassFactory = new ClassFactory(LinkRenderer);
+							itemLinkRenderer.properties = {source:target, columnLabel: column.headerText};
+							column.itemRenderer = itemLinkRenderer;
+						}
+						else if (column.dataField == "source_name")
+							column.width = 100;
+						else {
+							column.width = 250;
+						}
+						dataGrid.columns = dataGrid.columns.concat(column);
+					}		
+				}
+				dataGrid.dataProvider = result..record;
+			//	Alert.show(result..totalHits);
+				navBar.recordCount = result..totalHits;
+				navBar.recordNumPerPage = result..pageSize;
+				count.htmlText = "<b>" + key + "</b> " + target + "共有" + result..totalHits + "条 每页" + navBar.recordNumPerPage + "条 共" + navBar.pageCount + "页";
+			}
+			
+			public function pageChangeHandler():void 
+			{
+				var statSearchEvent:StatSearchEvent = new StatSearchEvent(key, cate, source, target, field, navBar.currentPageIndex-1, 20, identity);
+				statSearchEvent.dispatch();
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5">
+		<mx:Text id="count" fontSize="12" color="red" />
+		
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="95%" height="100%" textAlign="center" fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true" headerStyleName="mydataGridHeaderStyle">
+		</mx:DataGrid>
+		<Component:SuperNavBar id="navBar" width="100%" change="pageChangeHandler();"/>
+	</mx:VBox>
+	
+</mx:Canvas>

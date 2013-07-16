@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" fontSize="13" 
+	xmlns:Component="view.Components.*">
+	<mx:Metadata>
+		[Event(name="search", type="flash.events.Event")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import model.TsfModelLocator;
+			import mx.controls.Alert;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var dbArray:Array = ["临床库", "药理库", "个案库", "化学库", "针灸库"];
+			
+			private var _searchType:int = 0;
+			[Bindable]
+			public function get searchType():int
+			{
+				return _searchType;
+			}
+			public function set searchType(value:int):void
+			{
+				_searchType = value;
+				modelLocator.searchDB = value;
+				jumpBtn1.selected = (_searchType == 0);
+				jumpBtn2.selected = (_searchType == 1);
+				jumpBtn3.selected = (_searchType == 2);
+				jumpBtn4.selected = (_searchType == 3);
+				jumpBtn5.selected = (_searchType == 4);
+				changeEntry(value);
+			}
+			
+			public function changeEntry(value:int):void
+			{
+				switch(value)
+				{
+					case 0:
+					//	this.currentState = "";
+						combo.dataProvider = modelLocator.linChuang.entrylist;	
+						break;
+					case 1:
+					//	this.currentState = "multiComboState";
+					//	subCombo.enabled = true;
+						combo.dataProvider = modelLocator.yaoLi.entrylist;
+					//	subCombo.dataProvider = modelLocator.yaoLi.primaryEntryList[0].subEntryList;
+						break;
+				}
+			}
+			
+			public function comboClickHandler():void
+			{
+				if (_searchType != 1)
+				return;
+				var index:int = combo.selectedIndex;
+				subCombo.dataProvider = modelLocator.yaoLi.primaryEntryList[index].subEntryList;
+				if (modelLocator.yaoLi.primaryEntryList[index].subEntryList[0].label != "")
+					//subCombo.enabled = true;
+					modelLocator.subComboEnable = true;
+				else 
+				{
+				//	subCombo.enabled = false;
+					modelLocator.subComboEnable = false;
+				}
+			}
+			
+			private function searchBtnClickHandler():void
+			{
+				var key:String = trimKeyword(keywordTextInput.text);
+				modelLocator.currentInfo.database = dbArray[_searchType];
+				switch(_searchType)
+				{
+					case 0:
+						modelLocator.entryIndex = combo.selectedIndex;
+						modelLocator.currentInfo.keyword = key;
+						modelLocator.currentInfo.currentEntry = combo.selectedLabel;
+						modelLocator.searchType = 1;
+						modelLocator.currentView = modelLocator.linChuang.entrylist[modelLocator.entryIndex].itemArray[0];
+						dispatchEvent(new Event("search"));
+						break;
+					case 1:
+					//	modelLocator.primaryEntryIndex = combo.selectedIndex;
+					//	modelLocator.subEntryIndex = subCombo.selectedIndex;
+						modelLocator.entryIndex = combo.selectedIndex;
+						modelLocator.currentInfo.keyword = key;
+					//	modelLocator.currentInfo.primaryEntry = combo.selectedLabel;
+					//	modelLocator.currentInfo.subEntry = subCombo.selectedLabel;
+					//	modelLocator.currentInfo.currentEntry = combo.selectedLabel + " " + subCombo.selectedLabel;
+						modelLocator.currentInfo.currentEntry = combo.selectedLabel;
+						modelLocator.searchType = 1;
+					//	modelLocator.currentView = modelLocator.yaoLi.primaryEntryList[modelLocator.primaryEntryIndex].subEntryList[modelLocator.subEntryIndex].itemArray[0];
+						modelLocator.currentView = modelLocator.yaoLi.entrylist[modelLocator.entryIndex].itemArray[0];
+						dispatchEvent(new Event("search"));
+						break;
+				}
+//				if (_searchType == 0)
+//				{
+//					modelLocator.entryIndex = combo.selectedIndex;
+//					modelLocator.currentInfo.keyword = keywordTextInput.text;
+//					modelLocator.currentInfo.currentEntry = combo.selectedLabel;
+//					modelLocator.currentView = modelLocator.linChuang.entrylist[modelLocator.entryIndex].itemArray[0];
+//					dispatchEvent(new Event("search"));
+//				}
+				
+			}
+			
+			private function enterKeyDownHandler(event:KeyboardEvent):void
+			{
+				if (event.keyCode == 13)
+				{
+					validator.validate();
+				}
+			}
+			
+			private function trimKeyword(key:String):String
+			{
+				var startPos:int;
+				var endPos:int;
+				for (var i:int = 0; i < key.length; i++)
+				{
+					if (key.charAt(i) != ' ')
+					{
+						startPos = i;
+						break;
+					}
+				}
+				for (var j:int = key.length - 1; j >= 0; j--)
+				{
+					if (key.charAt(j) != ' ')
+					{
+						endPos = j;
+						break;
+					}
+				}
+				return key.substring(startPos, endPos + 1);
+			}
+			
+			public function init():void
+			{
+				//combo.dataProvider = modelLocator.linChuang.entrylist;			
+			}
+			
+			public function changeToIntro(value:int):void
+			{
+				searchType = value;
+				modelLocator.isIntro = true;
+				searchBtnClickHandler();
+			}
+			
+			public function doSearch():void
+			{
+				modelLocator.isIntro = false;
+				searchBtnClickHandler();
+			}
+		]]>
+	</mx:Script>
+		
+    <mx:StringValidator id="validator" source="{keywordTextInput}" property="text" requiredFieldError=""
+    	tooShortError="" minLength="1"
+    	trigger="{searchButton}" triggerEvent="click" 
+    	valid="doSearch()"/>
+   
+	<mx:Image width="320" height="89" source="@Embed('assets/logo.png')" horizontalCenter="-50" verticalCenter="-208"/>
+	
+	<mx:HBox horizontalCenter="-20" verticalCenter="-120">
+		<mx:TextInput id="keywordTextInput" width="250" keyDown="enterKeyDownHandler(event)"/>
+		<mx:ComboBox id="combo" width="160" height="25" fontSize="12" rowCount="7" labelField="label" close="comboClickHandler()"/>
+		<mx:Button id="searchButton" width="60" label="搜索" buttonMode="true"/>
+	</mx:HBox>
+	
+	
+	<mx:Canvas id="imgCanvas" height="88" horizontalCenter="-50" verticalCenter="-40">
+		<Component:JumpButton id="jumpBtn1" x="20" y="0" source="@Embed('assets/icon1.png')" text="临床" color="#FF6600" fontWeight="bold" change="changeToIntro(0)" selected="true"/>
+		<Component:JumpButton id="jumpBtn2" x="120" y="0" source="@Embed('assets/icon2.png')" text="药理" color="#FF6600" fontWeight="bold" change="changeToIntro(1)"/>
+		<Component:JumpButton id="jumpBtn3" x="220" y="0" source="@Embed('assets/icon3.png')" text="个案" color="#FF6600" fontWeight="bold" change="searchType = 2"/>
+		<Component:JumpButton id="jumpBtn4" x="320" y="0" source="@Embed('assets/icon4.png')" text="化学" color="#FF6600" fontWeight="bold" change="searchType = 3"/>
+		<Component:JumpButton id="jumpBtn5" x="420" y="0" source="@Embed('assets/icon5.png')" text="针灸" color="#FF6600" fontWeight="bold" change="searchType = 4"/>
+		
+	</mx:Canvas>
+	<mx:HBox horizontalCenter="0" bottom="10">
+		<mx:Text text="{modelLocator.copyright}"/>
+		<mx:Text text="{modelLocator.icp}"/>
+		<mx:Image source="@Embed('assets/biaoshi.png')"/>
+	</mx:HBox>
+	
+	<mx:states>
+		<mx:State name="multiComboState">
+			<mx:AddChild relativeTo="{combo}" position="after">
+				<mx:ComboBox id="subCombo" width="140" height="25" fontSize="12" rowCount="7" labelField="label" enabled="{modelLocator.subComboEnable}"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+</mx:Canvas>

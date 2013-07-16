@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off"
+	 xmlns:Component="view.Components.*">
+	
+	<mx:Style source="style/mystyle.css"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.core.ComponentDescriptor;
+			import mx.controls.LinkButton;
+			import mx.events.ItemClickEvent;
+			import events.RecordSearchEvent;
+			import model.TsfModelLocator;
+			import renderers.LinkRenderer;
+			import mx.controls.Alert;
+			import events.LinkButtonDynamicEvent;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var tag:Array = ["基本信息", "对照组信息", "实验检查信息", "临床诊疗信息"];
+			
+			public var mydata:ArrayCollection = new ArrayCollection([{label:"名称", value:"鼻炎"},{label:"类型", value:"呼吸疾病"}]);
+			
+			public var key:String;
+			public var source:String;
+			public var target:String;
+			
+			public var basicInfo:XML;
+			public var dzzInfo:XML;
+			public var syjcInfo:XML;
+			public var lczlInfo:XML;
+			
+			public function create():void
+			{
+			//	this.addEventListener(LinkButtonDynamicEvent.EVENT_ID, linkButtonClickHandler);
+			}
+			
+			public function init(key:String, source:String, target:String):void
+			{
+				this.key = key;
+				this.source = source;
+				this.target = target;
+				
+			}
+			
+			public function showRecord(result:XML):void
+			{
+				dataGrid.dataProvider = result..item;
+				switch(togglebar.selectedIndex) {
+					case 0:
+						basicInfo = new XML(result);
+						break;
+					case 1:
+						dzzInfo = new XML(result);
+						break;
+					case 2:
+						syjcInfo = new XML(result);
+						break;
+					case 3:
+						lczlInfo = new XML(result);
+						break;
+				}
+				var showText:String = "临床研究 " + "<b>" + key  + "</b> 详细信息";
+				info.htmlText = showText;
+			}
+			
+			public function searchHandler(event:ItemClickEvent):void
+			{
+				switch(event.index)
+				{
+					case 0:
+						if (basicInfo == null) {
+							target = event.label;
+							getResult();
+						}
+						else dataGrid.dataProvider = basicInfo..item;
+						break;
+					case 1:
+						if (dzzInfo == null) {
+							target = event.label;
+							getResult();
+						}
+						else dataGrid.dataProvider = dzzInfo..item;
+						break;
+					case 2:
+						if (syjcInfo == null) {
+							target = event.label;
+							getResult();
+						}
+						else dataGrid.dataProvider = syjcInfo..item;
+						break;
+					case 3:
+						if (lczlInfo == null) {
+							target = event.label;
+							getResult();
+						}
+						else dataGrid.dataProvider = lczlInfo..item;
+						break;
+				}
+			}
+			
+			public function getResult():void
+			{
+				var recordSearchEvent:RecordSearchEvent = new RecordSearchEvent(key,source,target, 0, 1);
+				recordSearchEvent.dispatch();
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5">
+		<mx:Text id="info" fontSize="12" color="red" />
+		<mx:ToggleButtonBar id="togglebar" selectedIndex="0" width="90%" height="25" dataProvider="{tag}" color="haloBlue" 
+			 selectedButtonTextStyleName="SelectedButtonTextStyleName" itemClick="searchHandler(event)">
+		</mx:ToggleButtonBar>
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="95%" textAlign="left" rowCount="20"  fontSize="12"
+			  showHeaders="false" resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true">
+			 <mx:columns>
+			 	<mx:DataGridColumn dataField="label" width="200" fontWeight="bold" />
+			 	<mx:DataGridColumn dataField="value" />
+			 </mx:columns>
+		</mx:DataGrid>	
+	</mx:VBox>
+</mx:Canvas>

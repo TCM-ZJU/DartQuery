@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off" 
+	xmlns:Component="view.Components.*">
+	
+	<mx:Style source="style/mystyle.css"/>
+	<mx:Script>
+		<![CDATA[
+			import model.TsfModelLocator;
+			import mx.controls.Alert;
+			import events.yaoli.StatSearchEvent;
+			import events.yaoli.ShowRecordEvent;
+			import events.LinkButtonDynamicEvent;
+			import mx.events.ItemClickEvent;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import renderers.LinkRenderer;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var key:String = "";
+			public var cate:String = "";
+			public var source:String = "";
+			public var target:String = "";
+			public var field:String = "";
+			public var identity:int;
+			public var tags:Array = new Array();
+			
+			public function create():void
+			{
+			//	this.addEventListener(LinkButtonDynamicEvent.EVENT_ID, linkButtonClickHandler);
+			}
+			
+			public function init(result:XML):void
+			{
+			//	Alert.show(result);
+			    key = result..key;
+				cate = result..cate;
+				source = result..source;
+				target = result..target;
+				field = result..field;
+				identity = int(result..identity);
+				
+				if (togglebar.dataProvider == null) {
+					
+					for each(var item:XML in result..item) 
+					{
+						tags.push(item.toString());
+					}
+					togglebar.dataProvider = tags;
+				}
+				for (var i:int = 0; i < tags.length; i++)
+				{
+					var label:String = tags[i] as String;
+					if (label.indexOf(field) != -1)
+					{
+						togglebar.selectedIndex = i;
+						break;
+					}
+				}
+				var columnsArray:Array = new Array();
+				for each(var columnXML:XML in result..column)
+				{
+					var column:DataGridColumn = new DataGridColumn();
+					column.headerText = columnXML.@headerText;
+					column.dataField = columnXML.@dataField;
+					if (column.dataField == "id" || column.dataField == "count")
+						column.width = 80;
+					else if (column.dataField == "link")
+					{	
+						column.width = 200;
+						var itemLinkRenderer:ClassFactory = new ClassFactory(LinkRenderer);
+						itemLinkRenderer.properties = {source:field, columnLabel: column.headerText};
+						column.itemRenderer = itemLinkRenderer;
+						column.headerText = "相同" + field + "的" + column.headerText;
+					}
+					columnsArray.push(column);	
+				}
+				dataGrid.columns = columnsArray;
+				dataGrid.dataProvider = result..record;
+			//	Alert.show(result..totalHits);
+				navBar.recordCount = result..totalHits;
+				navBar.recordNumPerPage = result..pageSize;
+			//	count.htmlText = cate + " <b>" + key + "</b> " + target + "共有" + result..totalHits + "条 每页" + navBar.recordNumPerPage + "条 共" + navBar.pageCount + "页" ;
+				count.htmlText = "按 <b>" + field + "<b> 统计 共有" + result..totalHits + "条 每页" + navBar.recordNumPerPage + "条 共" + navBar.pageCount + "页" ;
+			}
+			
+			public function searchHandler(event:ItemClickEvent):void
+			{
+				var statSearchEvent:StatSearchEvent = new StatSearchEvent(key, cate, source, target, event.label, 0, 20, identity);
+				statSearchEvent.dispatch();
+			}
+			
+			public function pageChangeHandler():void
+			{
+				var statSearchEvent:StatSearchEvent = new StatSearchEvent(key, cate, source, target, field, navBar.currentPageIndex-1, 20, identity);
+				statSearchEvent.dispatch();
+			}
+			
+//			public function linkButtonClickHandler(event:LinkButtonDynamicEvent):void
+//			{
+//				Alert.show(event.key + " " + event.label + " in stat");
+//			}
+
+			public function showRecord():void
+			{
+				var event:ShowRecordEvent = new ShowRecordEvent(target);
+				dispatchEvent(event);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5" paddingRight="5">
+		<mx:HBox width="95%">
+			<mx:Text id="count" fontSize="12" color="red" />
+			<mx:Spacer width="100%"/>	
+			<mx:Label id="recordInfo" text="查看记录信息" fontSize="12" fontWeight="bold" color="green"
+				 mouseChildren="false" buttonMode="true" click="showRecord()"  />
+		</mx:HBox>
+		
+		<mx:ToggleButtonBar id="togglebar" width="98%" height="25" color="haloBlue" 
+			 selectedButtonTextStyleName="SelectedButtonTextStyleName" itemClick="searchHandler(event)">
+		</mx:ToggleButtonBar>
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="98%" height="100%" textAlign="center" fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true" headerStyleName="mydataGridHeaderStyle">
+		</mx:DataGrid>
+		<Component:SuperNavBar id="navBar" width="100%" change="pageChangeHandler();"/>
+	</mx:VBox>
+</mx:Canvas>

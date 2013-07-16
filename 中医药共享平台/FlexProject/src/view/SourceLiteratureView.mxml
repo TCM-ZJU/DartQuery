@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off"
+	 xmlns:Component="view.Components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			import model.TsfModelLocator;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			
+		]]>
+	</mx:Script>
+	<mx:VBox verticalGap="20" paddingLeft="5" paddingTop="5" paddingRight="5">
+	<mx:HBox width="90%" horizontalAlign="center">
+		<mx:Label paddingLeft="5" text="当前查看的是xx单味药的研究信息原文" color="#0066cc"/>
+		<mx:Spacer width="60%" />
+		<mx:LinkButton paddingRight="5" width="80" textDecoration="underline" label="统计分析" color="#0066cc"/>
+	</mx:HBox>
+	
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="90%" textAlign="center" 
+			 resizableColumns="false" sortableColumns="false" rowCount="20" headerStyleName="mydataGridHeaderStyle">
+			<mx:columns>
+				<mx:DataGridColumn fontSize="12" headerText="序号" dataField="xuhao"/>
+				<mx:DataGridColumn fontSize="12" headerText="检索字段号" dataField="jiansuohao"/>
+				<mx:DataGridColumn fontSize="12" headerText="题名" dataField="timing"/>
+				<mx:DataGridColumn fontSize="12" headerText="刊名" dataField="kanming"/>
+				<mx:DataGridColumn fontSize="12" headerText="年" dataField="nian"/>
+				<mx:DataGridColumn fontSize="12" headerText="卷" dataField="juan"/>
+				<mx:DataGridColumn fontSize="12" headerText="期" dataField="qi"/>
+				<mx:DataGridColumn fontSize="12" headerText="研究单位" dataField="yjdw"/>
+				<mx:DataGridColumn fontSize="12" headerText="原文图片" dataField="pic"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<Component:SuperNavBar id="upNavBar" width="90%" recordCount="100" />
+	</mx:VBox>
+	
+</mx:Canvas>

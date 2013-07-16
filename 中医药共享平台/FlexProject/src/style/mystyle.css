@@ -1,0 +1,32 @@
+/* CSS file */
+
+.mydataGridHeaderStyle {
+   color: #3366ff;
+   fontWeight: bold;
+}
+
+DataGrid {
+   horizontalGridLines: true;
+   horizontalGridLineColor: #cccccc;
+}
+
+.titleColor {
+	color:#2E2EFE;
+	 fontWeight: bold;
+}
+
+.mypanel {
+	borderColor: #00CCCC;
+	borderAlpha: 0.28;
+	roundedBottomCorners: false;
+	footerColors: #0066ff, #c7c7c7;
+	backgroundColor: #ffffff;
+		}
+
+.SelectedButtonTextStyleName {
+	color: gray;
+}
+
+.myButton {
+	icon: Embed(source="assets/search.png");
+}

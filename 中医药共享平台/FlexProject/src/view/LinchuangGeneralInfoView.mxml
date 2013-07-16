@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalScrollPolicy="off">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.collections.ArrayCollection;
+			import events.RelationSearchEvent;
+			import model.TsfModelLocator;
+			import mx.controls.Alert;
+			import renderers.LinkRenderer;
+			
+			[Bindable]
+			private var modelLocator:TsfModelLocator = TsfModelLocator.getInstance();
+			
+			public var key:String = modelLocator.currentInfo.keyword;
+			public var source:String;
+			
+			public function init(result:XML):void
+			{
+				//Alert.show(result.toString());
+				var resStr:String = result.toString();
+				var resArray:Array = resStr.split("-");
+				var data:Array = new Array();
+				for (var i:int = 0; i < resArray.length; i++)
+				{	
+					var curStr:String = resArray[i] as String;
+					var pos:int = curStr.indexOf(" ");
+					var primary:String = curStr.substring(0, pos);
+					var count:String = curStr.substring(pos+1, curStr.length);
+				//	var content:String = key + " <b>" + primary + "</b> 共有" + count + "条";
+					var content:String = key + " <b>" + primary + "</b> 共有" + count;
+					if (primary.indexOf("文献") != -1)
+						content += "篇";
+					else content += "个";
+					var item:Object = new Object();
+					item.content = content;
+					item.primary = primary;
+					data.push(item);
+				}
+				if (modelLocator.currentInfo.currentEntry.indexOf("单味药") != -1)
+				{
+					var item:Object = new Object();
+					item.content = key + "相关使用剂量（按单位统计）";
+					item.primary = "使用剂量";
+					data.push(item);
+				}
+//				if (40*data.length + 100 < 800)
+//					modelLocator.resultPanelHeight = 800;
+//				else
+//					modelLocator.resultPanelHeight = 40*data.length + 100;
+				
+				for each(var column:DataGridColumn in dataGrid.columns)
+				{
+					if (column.dataField == "link")
+					{
+						var itemLinkRenderer:ClassFactory = new ClassFactory(LinkRenderer);
+						itemLinkRenderer.properties = {source:"", columnLabel: column.headerText};
+						column.itemRenderer = itemLinkRenderer;
+					}
+				}
+				dataGrid.dataProvider = data;
+			}
+			
+			public function getSimpleInfo(target:String):void
+			{
+				//Alert.show(event.currentTarget.selectedItem.primary);
+				if (target.indexOf("剂量") != -1)
+					return;
+				var key:String = modelLocator.currentInfo.keyword;
+				var source:String = modelLocator.currentInfo.currentEntry;
+			//	var target:String = event.currentTarget.selectedItem.primary;
+				var relationSearchEvent:RelationSearchEvent = new RelationSearchEvent(key,source,target,0,5);
+				relationSearchEvent.dispatch();
+			}
+			
+			public function showSimpleInfo(result:XML):void
+			{
+				var info:String = result..target + ": ";
+				var count:int = 0;
+				for each(var record:XML in result..record)
+				{
+					count++;
+					var content:XML = record.children()[1];
+					info += count + ". " + content.text() + " ";
+				}
+				simpleInfo.text = info;
+			}
+			
+		]]>
+	</mx:Script>
+
+
+	<mx:VBox width="100%" height="100%" verticalGap="10" paddingLeft="5" paddingBottom="5" paddingTop="5">
+		<mx:Label text="点击条目查看频次前五的相关信息" color="#CC6600" fontSize="15" />
+			
+		<mx:Text id="simpleInfo" width="95%" height="30" fontSize="14" color="red" />
+		<mx:DataGrid id="dataGrid" x="10" y="10" width="95%" height="100%" textAlign="center" fontSize="12"
+			 resizableColumns="false" sortableColumns="false" wordWrap="true" variableRowHeight="true"
+			  headerStyleName="mydataGridHeaderStyle" >
+			 <mx:columns>
+			 	<mx:DataGridColumn headerText="内容" width="600" >
+				 	<mx:itemRenderer>
+						<mx:Component>
+						<mx:Text htmlText="{data.content}" click="outerDocument.getSimpleInfo(data.primary)"
+							color="red" buttonMode="true" mouseChildren="false" />								
+						</mx:Component>
+						
+					</mx:itemRenderer>
+					
+			 	</mx:DataGridColumn>
+			 	<mx:DataGridColumn headerText="详细信息" dataField="link" />
+			 </mx:columns>  
+		</mx:DataGrid> 
+		
+	</mx:VBox>
+</mx:Canvas>
